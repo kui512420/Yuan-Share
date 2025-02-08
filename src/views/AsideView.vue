@@ -1,15 +1,17 @@
 <template>
+
   <div class="wrapper">
 
     <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
       @close="handleClose" :unique-opened=true>
 
       <el-menu-item index="7" @click="navigateTo('management/home/index')">
+        <el-icon>
+          <House />
+        </el-icon>
         <template #title>
-          <el-icon>
-            <House />
-          </el-icon>
-          首页
+
+          <span>首页</span>
         </template>
       </el-menu-item>
 
@@ -21,8 +23,8 @@
           <span>用户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1" @click="navigateTo('management/home/user-list')">用户列表</el-menu-item>
-          <el-menu-item index="1-2">在线用户</el-menu-item>
+          <el-menu-item index="1-1" @click="navigateTo('management/home/UserList')">用户列表</el-menu-item>
+          <el-menu-item index="1-2" @click="navigateTo('management/home/UserList')">停用管理</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
 
@@ -31,11 +33,11 @@
           <el-icon>
             <Memo />
           </el-icon>
-          <span>博客管理</span>
+          <span>文章管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1">博客列表</el-menu-item>
-          <el-menu-item index="2-2">我的博客</el-menu-item>
+          <el-menu-item index="2-1">文章列表</el-menu-item>
+          <el-menu-item index="2-2" @click="navigateTo('management/home/Edit')">添加文章</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
 
@@ -70,10 +72,10 @@
       </el-menu-item>
 
       <el-menu-item index="6">
+        <el-icon>
+          <Setting />
+        </el-icon>
         <template #title>
-          <el-icon>
-            <Setting />
-          </el-icon>
           设置
         </template>
       </el-menu-item>
@@ -85,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import {
   Setting,
   Bell,
@@ -93,16 +95,27 @@ import {
   Memo,
   Message,
   Document,
-  House
+  House,
+
 } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
-const isCollapse = ref(false)
+import { useShareStore } from '@/stores/counter';
+const sharedDataStore = useShareStore();
+
+const isCollapse = computed(() => sharedDataStore.isCollapse);
 const router = useRouter();
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+/**
+ *
+ *
+ *
+ *
+ *
+ */
+const handleOpen = () => {
+
 }
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+const handleClose = () => {
+
 }
 
 const navigateTo = (path: string) => {
@@ -117,5 +130,8 @@ const navigateTo = (path: string) => {
   min-height: 400px;
 }
 
-
+.el-menu--collapse {
+  width: 60px;
+  /* 设置收缩状态下侧边栏的宽度 */
+}
 </style>

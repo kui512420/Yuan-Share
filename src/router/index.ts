@@ -19,10 +19,12 @@ const router = createRouter({
         { path: 'index', component: () =>import('../components/HomeIndex.vue'), meta: {
           keepAlive: false,
         }},
-        { path: 'user-list', component: () => import('../components/UserList.vue') },
+        { path: 'UserList', component: () => import('../components/UserList.vue')},
+        { path: 'Edit', component: () => import('../components/EditMark.vue') },
       ],
 
     },
+
   ],
 })
 

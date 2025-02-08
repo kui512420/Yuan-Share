@@ -37,9 +37,9 @@
     <el-table-column property="headsrc" label="用户头像" width="123">
       <template #default="scope">
         <div class="demo-image__preview">
-          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="scope.row.headsrc" :zoom-rate="1.2"
-            :max-scale="7" :min-scale="0.2" :preview-src-list="[scope.row.headsrc]" :initial-index="4" fit="cover"
-            :preview-teleported=true />
+          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="getImageUrl(scope.row.headsrc)"
+            :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :preview-src-list="[getImageUrl(scope.row.headsrc)]"
+            :initial-index="4" fit="cover" :preview-teleported=true />
         </div>
       </template>
     </el-table-column>
@@ -99,7 +99,7 @@
       </el-form-item>
       <el-form-item label="头像">
         <el-upload class="avatar-uploader" action="api/upload-url" :show-file-list="false"
-          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id }"
+          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id, type: 0 }"
           name="fileInput">
           <img class="avatar" />
           <div class="demo-image__preview">
@@ -147,12 +147,12 @@
 import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
-import { findAll, delOne, findOne, delArr, updateStatus, findType, queryById, queryByUsername, changeImg, updateInfo } from '@/api/users'
+import { findAll, delOne, findOne, delArr, updateStatus, findType, queryById, queryByUsername, updateInfo } from '@/api/users'
 import { Search, Edit, Delete, Check, Plus } from '@element-plus/icons-vue'
 import type { DrawerProps, UploadProps } from 'element-plus'
 
 import { isNumber } from 'element-plus/es/utils/types.mjs'
-import { fa } from 'element-plus/es/locales.mjs'
+
 // 定义用户信息接口
 
 const tableData = ref([])
@@ -169,7 +169,7 @@ const disabled = ref(false)
 const drawer = ref(false)
 const direction = ref<DrawerProps['direction']>('rtl')
 const editStatus = ref(true)
-const selectionarr = ref([])
+const selectionarr  = ref([])
 const editFormData = reactive({
   id: "",
   username: "",
@@ -183,6 +183,19 @@ const editFormData = reactive({
 })
 
 const radio1 = ref('1')
+
+interface editFormDatain {
+  id: number,
+  username: string,
+  password: string,
+  headsrc: string,
+  status: number,
+  type: number,
+  register_time: string,
+  last_login: string,
+  bean: number
+}
+
 //上传成功的钩子
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
   response,
@@ -205,7 +218,10 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-
+const getImageUrl = (url: string) => {
+  const randomParam = new Date().getTime();
+  return `${url}?t=${randomParam}`;
+};
 //编辑抽屉关闭方法
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('是否要保存？')
@@ -361,18 +377,16 @@ const delMore = (idArr: Array<number>) => {
           message: '取消删除',
         })
       })
-
-
   }
-
-
 }
+
+
 //获取所选项
-const selection = (val: any[]) => {
+const selection = (val:editFormDatain[]) => {
   val.forEach((e) => {
-    selectionarr.value.push(e.id)
+    selectionarr.value.push(e.id as never)
   })
-};
+}
 //更新类型
 const upStatus = (id: number, status: number) => {
   updateStatus(id, status).then((respon) => {
@@ -414,7 +428,7 @@ const upStatus = (id: number, status: number) => {
   })
 }
 //刷新列表-类型
-const refreshListByT = (newValue) => {
+const refreshListByT = (newValue:string) => {
   if (newValue == "全部用户") {
     refreshList()
   } else if (newValue == "普通用户") {
@@ -486,21 +500,22 @@ const reset = () => {
 //修改部分信息
 const updateInfos = () => {
   let statusnum = 8
-  if(editStatus.value){
+  if (editStatus.value) {
     statusnum = 1
-  }else{
+  } else {
     statusnum = 0
   }
-
-
   updateInfo(parseInt(editFormData.id), statusnum, parseInt(radio1.value), editFormData.password).then((respon) => {
 
     if (respon.data.data == true) {
       ElMessage.success({
         message: "修改信息成功"
       })
-      refreshList()
       drawer.value = false
+      setTimeout(() => {
+        refreshList()
+      }, 1000)
+
     }
   })
 

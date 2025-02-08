@@ -85,17 +85,7 @@ export function updateStatus(id:number,status:number) {
     }
   })
 }
-//上传头像
-export function changeImg(id:number,fileInput:File) {
-  const formdata = new FormData()
-  formdata.append("id",id+"")
-  formdata.append("fileInput",fileInput)
-  return Request({
-    url: 'api/upload-url',
-    method: 'post',
-    data:formdata
-  })
-}
+
 //更新用户部分信息
 export function updateInfo(id:number,status:number,type:number,password:string) {
   return Request({
