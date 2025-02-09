@@ -2,22 +2,27 @@ import Request from '@/utils/Request'
 export function getCount(){
   return Request({
     url: 'api/getCount',
-    method: 'get'
+    method: 'get',
   })
 }
 //上传图片
-export function uploadImg(type:number,file:File,id?:number,article_id?:number) {
-  const formdata = new FormData()
-  if(type==0){
-    formdata.append("id",id+"")
-  }else if(type==1){
-    formdata.append("id",article_id+"")
-  }
-  formdata.append("type",type+"")
-  formdata.append("fileInput",file)
+export function uploadImg(formdata:FormData) {
   return Request({
     url: 'api/upload-url',
     method: 'post',
-    data:formdata
+    data:formdata,
+    headers:{
+      "Content-Type":"multipart/form-data"
+    }
+  })
+}
+/**
+ *
+ * @returns 当前登录用户的信息
+ */
+export function getUserInfo(){
+  return Request({
+    url: 'api/users/getUserInfo',
+    method: 'get',
   })
 }

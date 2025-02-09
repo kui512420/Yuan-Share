@@ -7,15 +7,24 @@
       </el-icon>
     </div>
     <div class="center">
-      云想衣裳花想容，春风拂槛露华浓。欢迎***
+      <span>云想衣裳花想容，春风拂槛露华浓。欢迎</span>
+      <span>|<strong>{{ nickname }}</strong></span>
+      <span>|<strong>类型：{{ type }}</strong></span>
+      <el-avatar
+        :src="headImg"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { Fold } from '@element-plus/icons-vue';
 import { useShareStore } from '@/stores/counter';
-
+import { getUserInfo } from '@/api/home'
+const nickname = ref('')
+const type = ref('')
+const headImg = ref('')
 // 获取共享状态仓库实例
 const shareStore = useShareStore();
 
@@ -23,6 +32,18 @@ const shareStore = useShareStore();
 const changec = () => {
   shareStore.changeCollapse();
 };
+const getUserIn = () => {
+  getUserInfo().then((respon) => {
+    nickname.value = respon.data.data.nickname
+    headImg.value = respon.data.data.headsrc+"?t="+new Date().getTime()
+    if (respon.data.data.type == 0) {
+      type.value = "管理员"
+    } else {
+      type.value = "普通用户"
+    }
+  })
+}
+getUserIn()
 </script>
 
 <style scoped>
@@ -33,6 +54,7 @@ const changec = () => {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  padding-bottom: 0;
 }
 
 .left {

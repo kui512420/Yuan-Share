@@ -79,13 +79,15 @@ const submitForm = async (form1: FormInstance | undefined) => {
       setTimeout(() => {
         loading.close()
         login(formdata).then((respon) => {
-
           const result = respon.data
           if (result.msg === "登录成功") {
             ElMessage({
               message: respon.data.msg,
               type: 'success',
             })
+            //设置token
+            window.sessionStorage.removeItem("token")
+            window.sessionStorage.setItem("token",respon.data.data)
             router.push("/management/home/index")
           } else {
             changeImg()

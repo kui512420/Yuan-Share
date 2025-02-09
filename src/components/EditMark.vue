@@ -66,10 +66,15 @@ const handleCopyCodeSuccess = () => {
       </el-upload>
       <HotCover></HotCover>
     </el-form-item>
+    <el-form-item>
+      <v-md-editor v-model="text" height="400px" :disabled-menus="[]" @upload-image="handleUploadImage" @save='toSave'
+      @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" round style="margin: 0 auto;">发布文章</el-button>
+    </el-form-item>
   </el-form>
 
-  <v-md-editor v-model="text" height="400px" :disabled-menus="[]" @upload-image="handleUploadImage" @save='toSave'
-    @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
 
 
 </template>

@@ -34,6 +34,7 @@
     </el-table-column>
     <el-table-column property="id" label="用户ID" width="76" />
     <el-table-column property="username" label="账号" />
+    <el-table-column property="nickname" label="名称" />
     <el-table-column property="headsrc" label="用户头像" width="123">
       <template #default="scope">
         <div class="demo-image__preview">
@@ -94,12 +95,15 @@
       <el-form-item label="用户账号">
         <el-input v-model="editFormData.username" disabled />
       </el-form-item>
+      <el-form-item label="名称">
+        <el-input v-model="editFormData.nickname" />
+      </el-form-item>
       <el-form-item label="用户密码">
         <el-input v-model="editFormData.password" />
       </el-form-item>
       <el-form-item label="头像">
-        <el-upload class="avatar-uploader" action="api/upload-url" :show-file-list="false"
-          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id, type: 0 }"
+        <el-upload class="avatar-uploader" :http-request="uploadIm" :show-file-list="false"
+          :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id, type: 0 }"
           name="fileInput">
           <img class="avatar" />
           <div class="demo-image__preview">
@@ -150,9 +154,8 @@ import { reactive, ref } from 'vue'
 import { findAll, delOne, findOne, delArr, updateStatus, findType, queryById, queryByUsername, updateInfo } from '@/api/users'
 import { Search, Edit, Delete, Check, Plus } from '@element-plus/icons-vue'
 import type { DrawerProps, UploadProps } from 'element-plus'
-
 import { isNumber } from 'element-plus/es/utils/types.mjs'
-
+import { uploadImg } from '@/api/home'
 // 定义用户信息接口
 
 const tableData = ref([])
@@ -169,10 +172,11 @@ const disabled = ref(false)
 const drawer = ref(false)
 const direction = ref<DrawerProps['direction']>('rtl')
 const editStatus = ref(true)
-const selectionarr  = ref([])
+const selectionarr = ref([])
 const editFormData = reactive({
   id: "",
   username: "",
+  nickname: "",
   password: "",
   headsrc: "",
   status: "",
@@ -181,7 +185,13 @@ const editFormData = reactive({
   last_login: "",
   bean: ""
 })
-
+interface UploadParams {
+  file: File;
+  data: {
+    id: number;
+    type: number;
+  };
+}
 const radio1 = ref('1')
 
 interface editFormDatain {
@@ -196,16 +206,21 @@ interface editFormDatain {
   bean: number
 }
 
-//上传成功的钩子
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
-) => {
-  editFormData.headsrc = URL.createObjectURL(uploadFile.raw!)
-  ElMessage.success({
-    message: "上传头像成功"
+
+const uploadIm = (params: UploadParams) => {
+  const file = params.file;
+  const formData = new FormData();
+  formData.append('id', params.data.id + "");
+  formData.append('type', params.data.type + "");
+  formData.append('fileInput', file);
+  uploadImg(formData).then(() => {
+    editFormData.headsrc = URL.createObjectURL(file)
+    ElMessage.success({
+      message: "上传头像成功"
+    })
   })
 }
+
 
 //上传前的校验钩子
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -237,9 +252,11 @@ const handleClose = (done: () => void) => {
 //刷新列表
 const refreshList = () => {
   findAll("register_time", currentPage1.value, pageSize1.value).then((respon) => {
-    const JsonUser = JSON.parse(JSON.stringify(respon.data.users))
-    tableData.value = JsonUser.list
-    total.value = parseInt(JsonUser.total)
+    if (JSON.stringify(respon.data.users) !== undefined) {
+      const JsonUser = JSON.parse(JSON.stringify(respon.data.users))
+      tableData.value = JsonUser.list
+      total.value = parseInt(JsonUser.total)
+    }
   })
 }
 //刷新列表-Type
@@ -316,6 +333,7 @@ const edit = (id: number) => {
     const data = respon.data.data
     editFormData.id = data.id
     editFormData.username = data.username
+    editFormData.nickname = data.nickname
     editFormData.password = data.password
     editFormData.headsrc = data.headsrc
     editFormData.status = data.status
@@ -382,7 +400,7 @@ const delMore = (idArr: Array<number>) => {
 
 
 //获取所选项
-const selection = (val:editFormDatain[]) => {
+const selection = (val: editFormDatain[]) => {
   val.forEach((e) => {
     selectionarr.value.push(e.id as never)
   })
@@ -428,7 +446,7 @@ const upStatus = (id: number, status: number) => {
   })
 }
 //刷新列表-类型
-const refreshListByT = (newValue:string) => {
+const refreshListByT = (newValue: string) => {
   if (newValue == "全部用户") {
     refreshList()
   } else if (newValue == "普通用户") {
@@ -455,7 +473,7 @@ const searchUser = () => {
             message: "用户不存在"
           })
         } else {
-          tableData.value = [JsonUser]
+          tableData.value = [JsonUser as never]
           ElMessage({
             type: "success",
             message: "查询成功"
@@ -472,7 +490,7 @@ const searchUser = () => {
               message: "用户不存在"
             })
           } else {
-            tableData.value = [JsonUser]
+            tableData.value = [JsonUser as never]
             ElMessage({
               type: "success",
               message: "查询成功"

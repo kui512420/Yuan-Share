@@ -77,6 +77,10 @@ getCount().then((respon) => {
       <ul>
         <li>前端框架：<a target="_blank" href="https://cn.vuejs.org/">Vue3</a></li>
         <li>后端框架：<a target="_blank" href="https://spring.io/projects/spring-boot/">Springboot</a></li>
+        <li>数据库：
+          <a target="_blank" href="https://jwt.io/">Mysql</a>、
+          <a target="_blank" href="https://jwt.io/">Redis</a>
+        </li>
         <li>markdown解析：<a target="_blank" href="https://code-farmer-i.github.io/vue-markdown-editor/zh/">v-md-editor</a></li>
         <li>UI库：<a target="_blank" href="https://element-plus.org/zh-CN/">element-plus</a></li>
         <li>身份校验：<a target="_blank" href="https://jwt.io/">JWT</a></li>
