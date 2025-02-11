@@ -13,18 +13,30 @@
       <el-avatar
         :src="headImg"
       />
+      <el-switch
+      v-model="isDark"
+      inline-prompt
+      active-text="dark"
+      size="large"
+      inactive-text="light"
+      @change="toggleDark"></el-switch>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Fold } from '@element-plus/icons-vue';
+import { Fold} from '@element-plus/icons-vue';
 import { useShareStore } from '@/stores/counter';
 import { getUserInfo } from '@/api/home'
+import { useDark,useToggle } from '@vueuse/core'
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
 const nickname = ref('')
 const type = ref('')
 const headImg = ref('')
+
 // 获取共享状态仓库实例
 const shareStore = useShareStore();
 

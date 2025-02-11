@@ -3,10 +3,11 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
+
     {
       path: '/management',
       name: 'Login',
-      component: () => import('../components/LoginPage.vue'),
+      component: () => import('../views/Management/LoginPage.vue'),
       meta: {
         keepAlive: false,
       },
@@ -14,13 +15,15 @@ const router = createRouter({
     {
       path: '/management/Home',
       name: 'home',
-      component: () => import('../components/HomePage.vue'),
+      component: () => import('../views/Management/HomeView.vue'),
       children: [
-        { path: 'index', name:'index', component: () =>import('../components/HomeIndex.vue'), meta: {
+        { path: 'index', name:'index', component: () =>import('@/components/Management/PageComponents/HomeIndex.vue'), meta: {
           keepAlive: false,
         }},
-        { path: 'UserList', component: () => import('../components/UserList.vue')},
-        { path: 'Edit', name:'edit',component: () => import('../components/EditMark.vue') },
+        { path: 'ArticleList', component: () => import('@/components/Management/ArticleComponents/ArticleList.vue')},
+        { path: 'UserList', component: () => import('@/components/Management/UserComponests/UserList.vue')},
+        { path: 'Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
+        { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
       ],
 
     },

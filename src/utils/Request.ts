@@ -10,7 +10,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   const token = window.sessionStorage.getItem('token')
-  console.log(111111111)
   if(token=="" || token==null || token==undefined){
     router.push('/management')
   }
@@ -22,7 +21,7 @@ instance.interceptors.request.use(function (config) {
 });
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
-  if(response.data.code==205){
+  if(response.data.code==205 || response.data.code==207 || response.data.code==204){
     ElMessage({
       message:response.data.msg
     })

@@ -147,7 +147,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
 .wrapper {
   width: 100%;
   height: calc(100vh);
-  background-image: url(../assets/login-bj.jpg);
+  background-image: url(../../assets/login-bj.jpg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

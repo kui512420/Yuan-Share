@@ -87,9 +87,7 @@ getCount().then((respon) => {
       </ul>
     </el-card>
   </div>
-
 </template>
 
 
 <style scoped></style>
-o

@@ -1,6 +1,6 @@
 <template>
   <div class="List-top">
-    <el-select v-model="userType" placeholder="用户类型" size="large" style="width: 120px" @change="refreshListByT">
+    <el-select v-model="userType" placeholder="用户类型" style="width: 120px" @change="refreshListByT">
       <el-option v-for="item in userTypes" :key="item" :label="item" :value="item" />
     </el-select>
 
@@ -57,8 +57,16 @@
       </template>
     </el-table-column>
     <el-table-column property="bean" label="币余额" width="70" />
-    <el-table-column property="last_login" label="最后登录时间" />
-    <el-table-column property="register_time" label="注册时间" />
+    <el-table-column property="last_login" label="最后登录时间">
+      <template #default="scope">
+        {{ convertDate(scope.row.last_login) }}
+      </template>
+    </el-table-column>
+    <el-table-column property="register_time" label="注册时间">
+      <template #default="scope">
+        {{ convertDate(scope.row.register_time) }}
+      </template>
+    </el-table-column>
     <el-table-column property="option" label="操作" width="210">
       <template #default="scope">
         <el-button type="primary" :icon="Edit" @click="edit(scope.row.id)" circle />
@@ -71,8 +79,8 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="upStatus(scope.row.id, 1)">启用</el-dropdown-item>
-              <el-dropdown-item @click="upStatus(scope.row.id, 0)">停用</el-dropdown-item>
+              <el-dropdown-item @click="upStatus(scope.row.id, scope.row.username, 1)">启用</el-dropdown-item>
+              <el-dropdown-item @click="upStatus(scope.row.id, scope.row.username, 0)">停用</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -103,8 +111,7 @@
       </el-form-item>
       <el-form-item label="头像">
         <el-upload class="avatar-uploader" :http-request="uploadIm" :show-file-list="false"
-          :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id, type: 0 }"
-          name="fileInput">
+          :before-upload="beforeAvatarUpload" :data="{ id: editFormData.id, type: 0 }" name="fileInput">
           <img class="avatar" />
           <div class="demo-image__preview">
             <el-image style="width: 100px; height: 100px;border-radius: 50%;" v-if="editFormData.headsrc"
@@ -156,6 +163,7 @@ import { Search, Edit, Delete, Check, Plus } from '@element-plus/icons-vue'
 import type { DrawerProps, UploadProps } from 'element-plus'
 import { isNumber } from 'element-plus/es/utils/types.mjs'
 import { uploadImg } from '@/api/home'
+import { convertDate } from '@/utils/DateUntil'
 // 定义用户信息接口
 
 const tableData = ref([])
@@ -172,7 +180,7 @@ const disabled = ref(false)
 const drawer = ref(false)
 const direction = ref<DrawerProps['direction']>('rtl')
 const editStatus = ref(true)
-const selectionarr = ref([])
+const selectionarr = ref<number[]>([])
 const editFormData = reactive({
   id: "",
   username: "",
@@ -206,7 +214,6 @@ interface editFormDatain {
   bean: number
 }
 
-
 const uploadIm = (params: UploadParams) => {
   const file = params.file;
   const formData = new FormData();
@@ -216,7 +223,7 @@ const uploadIm = (params: UploadParams) => {
   uploadImg(formData).then(() => {
     editFormData.headsrc = URL.createObjectURL(file)
     ElMessage.success({
-      message: "上传头像成功"
+      message: "上传封面成功"
     })
   })
 }
@@ -239,7 +246,11 @@ const getImageUrl = (url: string) => {
 };
 //编辑抽屉关闭方法
 const handleClose = (done: () => void) => {
-  ElMessageBox.confirm('是否要保存？')
+  ElMessageBox.confirm('确认要关闭？', '提示', {
+    confirmButtonText: '是，关闭',
+    cancelButtonText: '否，不关闭',
+    type: 'warning'
+  })
     .then(() => {
       done()
       refreshList()
@@ -342,7 +353,6 @@ const edit = (id: number) => {
     editFormData.last_login = data.last_login
     editFormData.bean = data.bean
     setTimeout(() => {
-      console.log(editFormData)
       //打开抽屉
       drawer.value = true
       //状态开关
@@ -401,13 +411,14 @@ const delMore = (idArr: Array<number>) => {
 
 //获取所选项
 const selection = (val: editFormDatain[]) => {
-  val.forEach((e) => {
-    selectionarr.value.push(e.id as never)
-  })
+  selectionarr.value = []
+  val.forEach(element => {
+    selectionarr.value.push(element.id)
+  });
 }
-//更新类型
-const upStatus = (id: number, status: number) => {
-  updateStatus(id, status).then((respon) => {
+//更新状态
+const upStatus = (id: number, username: string, status: number) => {
+  updateStatus(id, username, status).then((respon) => {
     if (status == 1) {
       if (respon.data.data == true) {
         ElMessage({
@@ -523,7 +534,7 @@ const updateInfos = () => {
   } else {
     statusnum = 0
   }
-  updateInfo(parseInt(editFormData.id), statusnum, parseInt(radio1.value), editFormData.password).then((respon) => {
+  updateInfo(parseInt(editFormData.id), editFormData.username, statusnum, parseInt(radio1.value), editFormData.password).then((respon) => {
 
     if (respon.data.data == true) {
       ElMessage.success({

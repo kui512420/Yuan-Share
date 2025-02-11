@@ -24,7 +24,6 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="1-1" @click="navigateTo('management/home/UserList')">用户列表</el-menu-item>
-          <el-menu-item index="1-2" @click="navigateTo('management/home/UserList')">停用管理</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
 
@@ -36,7 +35,7 @@
           <span>文章管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1">文章列表</el-menu-item>
+          <el-menu-item index="2-1" @click="navigateTo('management/home/ArticleList')">文章列表</el-menu-item>
           <el-menu-item index="2-2" @click="navigateTo('management/home/Edit')">添加文章</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
@@ -49,7 +48,7 @@
           <span>日志管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="3-1">登录日志</el-menu-item>
+          <el-menu-item index="3-1" @click="navigateTo('management/home/LoginLog')">登录日志</el-menu-item>
           <el-menu-item index="3-2">签到日志</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>

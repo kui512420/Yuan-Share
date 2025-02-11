@@ -23,12 +23,12 @@ const sharedDataStore = useShareStore();
 
 // 定义图片数组
 const images = [
-  'api/userheader/java.png',
-  'api/userheader/mysql.png',
-  'api/userheader/redis.png',
-  'api/userheader/springboot.png',
-  'api/userheader/算法.png',
-  'api/userheader/前端.png'
+  'api/articlecover/java.png',
+  'api/articlecover/mysql.png',
+  'api/articlecover/redis.png',
+  'api/articlecover/springboot.png',
+  'api/articlecover/算法.png',
+  'api/articlecover/前端.png'
 ];
 
 // 定义响应式变量来记录选中的图片

@@ -75,24 +75,26 @@ export function delArr(idArr:string) {
   })
 }
 //更新用户状态
-export function updateStatus(id:number,status:number) {
+export function updateStatus(id:number,username:string,status:number) {
   return Request({
     url: 'api/users/updateStatus',
     method: 'put',
     data:{
       id:id,
+      username:username,
       status:status
     }
   })
 }
 
 //更新用户部分信息
-export function updateInfo(id:number,status:number,type:number,password:string) {
+export function updateInfo(id:number,username:string,status:number,type:number,password:string) {
   return Request({
     url: 'api/users/updateInfo',
     method: 'put',
     data:{
       id:id,
+      username:username,
       status:status,
       type:type,
       password:password
