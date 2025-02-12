@@ -5,6 +5,10 @@ export const useShareStore = defineStore('sharedData', () => {
   // 使用 ref 创建一个响应式的布尔值，初始值为 false
   const isCollapse = ref(false);
   const HotCoverImgSrc = ref("")
+  const article_id = ref()
+  function setArticle_id(id:number){
+    article_id.value = id;
+  }
 
   // 定义一个方法用于切换 isCollapse 的值
   function changeCollapse() {
@@ -17,5 +21,5 @@ export const useShareStore = defineStore('sharedData', () => {
     HotCoverImgSrc.value = src
   }
   // 返回需要暴露的状态和方法
-  return { isCollapse,postSrc,HotCoverImgSrc, changeCollapse };
+  return {article_id, setArticle_id,isCollapse,postSrc,HotCoverImgSrc, changeCollapse };
 });

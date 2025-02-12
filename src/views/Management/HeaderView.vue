@@ -5,38 +5,38 @@
       <el-icon size="30" style="margin-left: 90px;" @click="changec">
         <Fold />
       </el-icon>
+      <el-breadcrumb separator="/">
+      <el-breadcrumb-item v-for="(item, index) in breadcrumbList" :key="index" :to="item.to">
+        {{ item.name }}
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     </div>
     <div class="center">
       <span>云想衣裳花想容，春风拂槛露华浓。欢迎</span>
       <span>|<strong>{{ nickname }}</strong></span>
       <span>|<strong>类型：{{ type }}</strong></span>
-      <el-avatar
-        :src="headImg"
-      />
-      <el-switch
-      v-model="isDark"
-      inline-prompt
-      active-text="dark"
-      size="large"
-      inactive-text="light"
-      @change="toggleDark"></el-switch>
+      <el-avatar :src="headImg" />
+      <el-switch v-model="isDark" inline-prompt active-text="dark" size="large" inactive-text="light"
+        @change="toggleDark"></el-switch>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Fold} from '@element-plus/icons-vue';
+import { ref,watchEffect  } from 'vue'
+import { useRoute } from 'vue-router';
+import { Fold } from '@element-plus/icons-vue';
 import { useShareStore } from '@/stores/counter';
 import { getUserInfo } from '@/api/home'
-import { useDark,useToggle } from '@vueuse/core'
+import { useDark, useToggle } from '@vueuse/core'
+import breadcrumbConfig from '@/router/breadcrumbConfig'
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
 const nickname = ref('')
 const type = ref('')
 const headImg = ref('')
-
+const route = useRoute();
 // 获取共享状态仓库实例
 const shareStore = useShareStore();
 
@@ -47,7 +47,7 @@ const changec = () => {
 const getUserIn = () => {
   getUserInfo().then((respon) => {
     nickname.value = respon.data.data.nickname
-    headImg.value = respon.data.data.headsrc+"?t="+new Date().getTime()
+    headImg.value = respon.data.data.headsrc + "?t=" + new Date().getTime()
     if (respon.data.data.type == 0) {
       type.value = "管理员"
     } else {
@@ -56,6 +56,11 @@ const getUserIn = () => {
   })
 }
 getUserIn()
+const breadcrumbList = ref<{ name: string; to?: { path: string } }[]>([]);
+watchEffect(() => {
+  const currentPath = route.path;
+  breadcrumbList.value = breadcrumbConfig[currentPath]  || [];
+});
 </script>
 
 <style scoped>

@@ -21,6 +21,13 @@ interface UploadParams {
     type: number;
   };
 }
+type ImageInsertOptions = {
+  url: string;
+  desc: string;
+  width: string;
+  height: string;
+};
+type InsertImageFunction = (options: ImageInsertOptions) => void;
 const recover = () => {
   ElMessage.success("已恢复上次保存数据")
   const data = localStorage.getItem("saveData")
@@ -33,7 +40,7 @@ if (localStorage.getItem("saveData") !== null) {
   recover()
 }
 
-const toSave = (txt: string, html: string) => {
+const toSave = (txt: string) => {
   localStorage.setItem("saveData", txt)
   ElMessage.success("保存成功")
 }
@@ -53,13 +60,30 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   return true
 }
 
+const uploadArticle = (event:never, insertImage:InsertImageFunction, files: File[]) => {
+
+  const formData = new FormData();
+  formData.append('type', "2");
+  formData.append('fileInput', files[0]);
+  uploadImg(formData).then((respon) => {
+    insertImage({
+      url:
+        'http://localhost:5173/' + respon.data.msg,
+      desc: '图片',
+      width: 'auto',
+      height: 'auto',
+    });
+
+  })
+}
+
+
 const uploadIm = (params: UploadParams) => {
   const file = params.file;
   const formData = new FormData();
   formData.append('type', params.data.type + "");
   formData.append('fileInput', file);
-  uploadImg(formData).then((respon) => {
-    article_src.value = respon.data.msg
+  uploadImg(formData).then(() => {
     sharedDataStore.HotCoverImgSrc = URL.createObjectURL(file)
     ElMessage.success({
       message: "上传头像成功"
@@ -77,28 +101,28 @@ const addArticle = () => {
       message: '标题不能为空',
       type: 'warning',
     })
-  }else if(inputTag.value.length==0){
+  } else if (inputTag.value.length == 0) {
     ElNotification({
       title: 'Warning',
       message: '标签不能为空',
       type: 'warning',
     })
-  }else if(articleType.value==undefined){
+  } else if (articleType.value == undefined) {
     ElNotification({
       title: 'Warning',
       message: '文章类型不能为空',
       type: 'warning',
     })
-  }else if(text.value==""){
+  } else if (text.value == "") {
     ElNotification({
       title: 'Warning',
       message: '文章内容不能为空',
       type: 'warning',
     })
-  }else{
+  } else {
     add(title.value, article_src.value, arr, text.value, articleType.value).then((respon) => {
-    ElMessage.success(respon.data.msg)
-  })
+      ElMessage.success(respon.data.msg)
+    })
   }
 
 
@@ -137,7 +161,7 @@ const addArticle = () => {
       <HotCover></HotCover>
     </el-form-item>
     <el-form-item>
-      <v-md-editor v-model="text" height="400px" :disabled-menus="[]" @save='toSave'
+      <v-md-editor v-model="text" height="400px" :disabled-menus="[]" @save='toSave' @upload-image="uploadArticle"
         @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
     </el-form-item>
     <el-form-item>

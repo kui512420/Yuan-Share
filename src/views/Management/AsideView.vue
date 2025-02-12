@@ -23,7 +23,7 @@
           <span>用户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1" @click="navigateTo('management/home/UserList')">用户列表</el-menu-item>
+          <el-menu-item index="1-1" @click="navigateTo('management/home/User/UserList')">用户列表</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
 
@@ -35,8 +35,7 @@
           <span>文章管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1" @click="navigateTo('management/home/ArticleList')">文章列表</el-menu-item>
-          <el-menu-item index="2-2" @click="navigateTo('management/home/Edit')">添加文章</el-menu-item>
+          <el-menu-item index="2-1" @click="navigateTo('management/home/Article/ArticleList')">文章列表</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
 

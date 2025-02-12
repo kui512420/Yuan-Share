@@ -4,6 +4,7 @@ import { User, Lock, CircleCheck } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { login } from '@/api/login'
+import { getUserInfo } from '@/api/home'
 import router from '@/router/index'
 //方便获取到表单实例
 const ruleFormRef = ref<FormInstance>()
@@ -58,8 +59,14 @@ function changeImg() {
   imgSrc.value = 'api/code/captcha?t=' + timestamp
 }
 
-
-
+const checkStatus= ()=>{
+  getUserInfo().then((respon)=>{
+    if(respon.data.code==200){
+      router.push("/management/home/index")
+    }
+  })
+}
+checkStatus()
 /*
 提交表单登录
 */
@@ -77,9 +84,10 @@ const submitForm = async (form1: FormInstance | undefined) => {
       formdata.append("password", RuleForm.password)
       formdata.append("captaCode", RuleForm.code)
       setTimeout(() => {
-        loading.close()
+
         login(formdata).then((respon) => {
           const result = respon.data
+          loading.close()
           if (result.msg === "登录成功") {
             ElMessage({
               message: respon.data.msg,

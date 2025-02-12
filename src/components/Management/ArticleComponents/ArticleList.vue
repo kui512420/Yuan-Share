@@ -1,6 +1,6 @@
 <template>
   <div class="List-top">
-    <el-select v-model="userType" placeholder="文章类型" style="width: 120px" @change="refreshList(5, userType)">
+    <el-select v-model="userType" placeholder="文章类型" style="width: 120px" @change="refreshList()">
       <el-option v-for="item in userTypes" :key="item" :label="item" :value="item" />
     </el-select>
 
@@ -22,6 +22,7 @@
 
     <el-button type="danger" @click="delMore(selectionarr)">批量删除</el-button>
     <el-button type="info" @click="reset">重置</el-button>
+    <el-button type="success" @click="goEdit">添加文章</el-button>
   </div>
 
 
@@ -63,8 +64,8 @@
     <el-table-column property="article_cover" label="封面" width="123">
       <template #default="scope">
         <div class="demo-image__preview">
-          <el-image style="width: 100px; height: 100px;" :src="getImageUrl(scope.row.article_cover)"
-            :preview-src-list="[getImageUrl(scope.row.article_cover)]" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2"
+          <el-image style="width: 100px; height: 100px;" :src="scope.row.article_cover"
+            :preview-src-list="[scope.row.article_cover]" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2"
             :initial-index="4" fit="cover" :preview-teleported=true />
         </div>
       </template>
@@ -87,10 +88,12 @@
         {{ convertDate(scope.row.publish_time) }}
       </template>
     </el-table-column>
-    <el-table-column property="option" label="操作" width="210">
+    <el-table-column property="option" label="操作" width="250">
       <template #default="scope">
-        <el-button type="primary" :icon="Edit" circle />
-        <el-button type="danger" :icon="Delete" circle @click="del(scope.row.article_id)"/>
+        <el-button type="info" :icon="Edit" circle />
+        <el-button type="danger" :icon="Delete" circle @click="del(scope.row.article_id)" />
+        <el-button type="primary" :icon="View" circle @click="goView(scope.row.article_id)"/>
+
         <el-dropdown style="margin-left: 5px;">
           <el-button size="small">
             更多<el-icon class="el-icon--right">
@@ -99,8 +102,8 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>启用</el-dropdown-item>
-              <el-dropdown-item>停用</el-dropdown-item>
+              <el-dropdown-item>上架</el-dropdown-item>
+              <el-dropdown-item>下架</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -115,16 +118,19 @@
       @size-change="handleSizeChange" @current-change="handleCurrentChange" />
   </div>
 
+
+
 </template>
 
 <script lang="ts" setup>
 import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
-import { ArrowDown } from '@element-plus/icons-vue'
+import { ArrowDown ,View} from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { get,delOne } from '@/api/article'
+import { get, delOne, delArr } from '@/api/article'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
-
+import router from '@/router'
+import  {useShareStore} from '@/stores/counter'
 const tableData = ref([])
 const total = ref(0)
 const currentPage1 = ref(1)
@@ -136,38 +142,45 @@ const userType = ref('')
 const userTypes = ["前端", "后端", '测试', '运维', "算法", "数据库", '工具', "其他"]
 const disabled = ref(false)
 const selectionarr = ref<number[]>([])
+const useShare = useShareStore()
+interface editFormDatain {
+  article_id: number
+}
 
-const getImageUrl = (url: string) => {
-  const randomParam = new Date().getTime();
-  return `${url}?t=${randomParam}`;
-};
+const goEdit = ()=>{
+  router.replace("/management/home/Article/Edit")
+}
+const goView = (id:number)=>{
+  router.push('/management/home/Article/ViewArticle')
+  useShare.setArticle_id(id)
+}
 
 
 //刷新列表
-const refreshList = (isSearch?:boolean) => {
+const refreshList = (isSearch?: boolean) => {
   let article_type1 = 0
   let Searchtype = 0
   // 1 前端 2 后端 3 测试 4 运维 5 算法 6 数据库 7 工具 8 其他
 
-  if(userType.value == "前端") {
+  if (userType.value == "前端") {
     article_type1 = 1
     Searchtype = 5
     console.log(Searchtype)
-  } else if (userType.value  == "后端") {
+  } else if (userType.value == "后端") {
     article_type1 = 2
     Searchtype = 5
   } else if (userType.value == "测试") {
     article_type1 = 3
     Searchtype = 5
-  } else if (userType.value  == "运维") {
+  } else if (userType.value == "运维") {
     article_type1 = 4
     Searchtype = 5
-  } else if (userType.value  == "算法") {
+  } else if (userType.value == "算法") {
     article_type1 = 5
-  } else if (userType.value  == "数据库") {
+  } else if (userType.value == "数据库") {
     article_type1 = 6
     Searchtype = 5
-  } else if (userType.value  == "工具") {
+  } else if (userType.value == "工具") {
     article_type1 = 7
     Searchtype = 5
   } else if (userType.value == "其他") {
@@ -175,10 +188,10 @@ const refreshList = (isSearch?:boolean) => {
     Searchtype = 5
   }
 
-  if(isSearch==true){
+  if (isSearch == true) {
     Searchtype = parseInt(select.value)
   }
-  get(currentPage1.value, pageSize1.value, Searchtype,searchData.value, article_type1).then((respon) => {
+  get(currentPage1.value, pageSize1.value, Searchtype, searchData.value, article_type1).then((respon) => {
     const JsonArticle = respon.data.data
     tableData.value = JsonArticle.list
     total.value = parseInt(JsonArticle.total)
@@ -229,6 +242,7 @@ const del = (id: number) => {
 
 //删除多个用户
 const delMore = (idArr: Array<number>) => {
+
   if (idArr.length == 0) {
     ElNotification({
       title: '警告',
@@ -272,9 +286,10 @@ const delMore = (idArr: Array<number>) => {
 
 //获取所选项
 const selection = (val: editFormDatain[]) => {
+
   selectionarr.value = []
   val.forEach(element => {
-    selectionarr.value.push(element.id)
+    selectionarr.value.push(element.article_id)
   });
 }
 

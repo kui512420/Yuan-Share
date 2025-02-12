@@ -83,3 +83,19 @@ export function delOne(id:number){
     }
   })
 }
+export function delArr(idArr:string){
+  return Request({
+    url:"api/article/delArr",
+    method:"post",
+    data:"idArr="+idArr
+  })
+}
+export function findOne(id:number){
+  return Request({
+    url:"api/article/findOne",
+    method:"get",
+    params:{
+      id:id
+    }
+  })
+}

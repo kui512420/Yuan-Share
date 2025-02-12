@@ -20,12 +20,15 @@ const router = createRouter({
         { path: 'index', name:'index', component: () =>import('@/components/Management/PageComponents/HomeIndex.vue'), meta: {
           keepAlive: false,
         }},
-        { path: 'ArticleList', component: () => import('@/components/Management/ArticleComponents/ArticleList.vue')},
-        { path: 'UserList', component: () => import('@/components/Management/UserComponests/UserList.vue')},
-        { path: 'Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
+        { path: 'Article/ViewArticle', name:'view',component: () => import('@/components/Management/ArticleComponents/ViewArticle.vue') },
+        { path: 'Article/ArticleList', component: () => import('@/components/Management/ArticleComponents/ArticleList.vue')},
+        { path: 'User/UserList', component: () => import('@/components/Management/UserComponests/UserList.vue')},
+        { path: 'Article/Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
         { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
       ],
-
+      meta: {
+        keepAlive: false,
+      },
     },
 
   ],

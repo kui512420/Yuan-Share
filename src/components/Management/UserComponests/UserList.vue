@@ -38,8 +38,8 @@
     <el-table-column property="headsrc" label="用户头像" width="123">
       <template #default="scope">
         <div class="demo-image__preview">
-          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="getImageUrl(scope.row.headsrc)"
-            :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :preview-src-list="[getImageUrl(scope.row.headsrc)]"
+          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="scope.row.headsrc"
+            :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :preview-src-list="[scope.row.headsrc]"
             :initial-index="4" fit="cover" :preview-teleported=true />
         </div>
       </template>
@@ -69,7 +69,7 @@
     </el-table-column>
     <el-table-column property="option" label="操作" width="210">
       <template #default="scope">
-        <el-button type="primary" :icon="Edit" @click="edit(scope.row.id)" circle />
+        <el-button type="info" :icon="Edit" @click="edit(scope.row.id)" circle />
         <el-button type="danger" :icon="Delete" @click="del(scope.row.id)" circle />
         <el-dropdown style="margin-left: 5px;">
           <el-button size="small">
@@ -368,6 +368,7 @@ const edit = (id: number) => {
 }
 //删除多个用户
 const delMore = (idArr: Array<number>) => {
+
   if (idArr.length == 0) {
     ElNotification({
       title: '警告',
@@ -388,6 +389,7 @@ const delMore = (idArr: Array<number>) => {
     )
       .then(() => {
         const data = idArr.toString().replace("[", "").replace("]", "")
+
         delArr(data).then((respon) => {
           if (respon.data.data >= 1) {
             ElMessage({
