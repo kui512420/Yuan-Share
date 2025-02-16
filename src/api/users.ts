@@ -101,3 +101,10 @@ export function updateInfo(id:number,username:string,status:number,type:number,p
     }
   })
 }
+//签到
+export function signIn() {
+  return Request({
+    url: 'api/user/signin',
+    method: 'get'
+  })
+}

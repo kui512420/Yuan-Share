@@ -3,7 +3,16 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
-
+    {
+      path: '/',
+      name: 'qiantai',
+      component: () => import('../views/QianTai/indexView.vue'),
+    },
+    {
+      path: '/article/:id',
+      name: 'article',
+      component: () => import('../views/Management/ViewArticlePage.vue'),
+    },
     {
       path: '/management',
       name: 'Login',

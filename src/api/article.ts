@@ -99,3 +99,14 @@ export function findOne(id:number){
     }
   })
 }
+export function updateStatus(id:number,status:number){
+
+  return Request({
+    url:"api/article/updateStatus",
+    method:"get",
+    params:{
+      id:id,
+      status:status
+    }
+  })
+}

@@ -240,10 +240,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   }
   return true
 }
-const getImageUrl = (url: string) => {
-  const randomParam = new Date().getTime();
-  return `${url}?t=${randomParam}`;
-};
+
 //编辑抽屉关闭方法
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('确认要关闭？', '提示', {

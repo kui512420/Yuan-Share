@@ -72,8 +72,9 @@
     </el-table-column>
     <el-table-column property="article_status" label="状态">
       <template #default="scope">
-        <el-tag type="primary">{{ scope.row.article_status === 1 ? '上架' : scope.row.type === 0 ? '下架' :
-          scope.row.article_status }}</el-tag>
+        <el-tag :type="scope.row.article_status === 1 ? 'primary' : 'danger'">
+          {{ scope.row.article_status === 1 ? '上架' : '下架' }}
+        </el-tag>
       </template>
     </el-table-column>
 
@@ -102,8 +103,8 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>上架</el-dropdown-item>
-              <el-dropdown-item>下架</el-dropdown-item>
+              <el-dropdown-item @click="updateSt(scope.row.article_id,1)">上架</el-dropdown-item>
+              <el-dropdown-item @click="updateSt(scope.row.article_id,0)">下架</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -126,7 +127,7 @@
 import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { ArrowDown ,View} from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { get, delOne, delArr } from '@/api/article'
+import { get, delOne, delArr,updateStatus } from '@/api/article'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
 import router from '@/router'
@@ -298,6 +299,15 @@ const reset = () => {
   select.value = "1"
   userType.value = "全部"
   refreshList()
+}
+//更改状态
+const updateSt = (id:number,status:number)=>{
+
+  updateStatus(id,status).then((respon)=>{
+    ElMessage.success(respon.data.msg)
+    refreshList()
+  })
+
 }
 
 </script>

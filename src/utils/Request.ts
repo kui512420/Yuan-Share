@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus';
 // 创建实例时配置默认值
 const instance = axios.create({
-  baseURL: 'http://localhost:5173/',
+  baseURL: '/',
   timeout:5000 //默认超时5s
 });
 // 添加请求拦截器
