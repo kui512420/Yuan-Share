@@ -10,7 +10,6 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   const token = window.sessionStorage.getItem('token')
-
   if(token=="" || token==null || token==undefined){
     router.push('/management')
   }

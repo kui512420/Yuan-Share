@@ -74,7 +74,7 @@ refreshList()
 </script>
 
 <template>
-  <div style="flex-grow: 5; padding: 5px; background-color: #fff; border: 1px solid black;">
+  <div style="flex-grow: 5; padding: 5px; background-color: #fff; ">
     <div v-for="(item, index) in data" :key="index"
       style="display: flex;border-bottom:1px solid rgba(228,230,235,0.5); justify-content: space-between;">
       <div style="display: flex; flex-direction: column; justify-content: space-around;">
@@ -92,10 +92,17 @@ refreshList()
       </div>
       <img class="isShowImg" style="padding: 5px;" :src=item.article_cover alt="" width="80px" height="80">
     </div>
-    <div class="demo-pagination-block">
-      <el-pagination v-model:current-page="currentPage1" v-model:page-size="pageSize1" :page-sizes="[5, 10, 30, 100]"
-        :disabled="disabled" :background="true" layout="total, sizes, prev, pager, next, jumper" v-model:total='total'
-        @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+    <div class="demo-pagination-block" style="display: flex; justify-content: center; margin-top: 10px;">
+      <el-pagination
+      size="small"
+      v-model:current-page="currentPage1"
+      v-model:page-size="pageSize1"
+      :background="true"
+      layout="prev, pager, next"
+      v-model:total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
     </div>
   </div>
 </template>
