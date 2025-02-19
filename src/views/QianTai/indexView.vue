@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '@/router'
 import { get } from '@/api/article'
+import { useRouter } from 'vue-router';
 import { signIn } from '@/api/users'
 import { ElMessage } from 'element-plus'
 import ArticleCard from '@/components/Mycomponents/ArticleCard.vue'
@@ -10,6 +10,7 @@ const data = ref([])
 const total = ref(0)
 const currentPage1 = ref(1)
 const pageSize1 = ref(5)
+const router = useRouter();
 const goMe = () => {
   router.push('/management')
 }
@@ -26,9 +27,14 @@ const signInto = () => {
       ElMessage.success({
         message: respon.data.msg
       })
-    } else {
+    } else if (respon.data.code == "210") {
       ElMessage.error({
         message: respon.data.msg
+      })
+    }else{
+      router.push('/management')
+      ElMessage.error({
+        message: "未登录,正在前往登录"
       })
     }
   })
@@ -48,7 +54,7 @@ refreshList()
       <div class="main-content">
         <ArticleCard></ArticleCard>
         <div class="main-right">
-          <el-card>
+          <el-card style="margin-bottom: 30px;">
             <div>
               <h3>晚上好</h3>
               <span>点亮在社区的每一天</span>
@@ -82,7 +88,6 @@ refreshList()
 
 .main-right {
   flex-grow: 1;
-  border: 1px solid red;
   padding: 20px;
 }
 

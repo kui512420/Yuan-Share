@@ -48,7 +48,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="3-1" @click="navigateTo('management/home/LoginLog')">登录日志</el-menu-item>
-          <el-menu-item index="3-2">签到日志</el-menu-item>
+          <el-menu-item index="3-2" @click="navigateTo('management/home/SigninLog')">签到日志</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
       <el-menu-item index="4">
