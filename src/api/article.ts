@@ -1,4 +1,5 @@
 import Request from '@/utils/Request'
+//添加文章
 export function add(article_title:string,article_cover:string,article_tag:string[],article_content:string,article_type:number){
   return Request({
     url: 'api/article/add',
@@ -12,6 +13,7 @@ export function add(article_title:string,article_cover:string,article_tag:string
     }
   })
 }
+//获取文章列表
 export function get(pagenow:number,pageCount:number,type:number,inputData?:string,article_type?:number){
   let params = {}
   /*
@@ -74,6 +76,7 @@ export function get(pagenow:number,pageCount:number,type:number,inputData?:strin
     params:params
   })
 }
+//删除单个
 export function delOne(id:number){
   return Request({
     url: 'api/article/delOne',
@@ -83,6 +86,7 @@ export function delOne(id:number){
     }
   })
 }
+//批量删除文章
 export function delArr(idArr:string){
   return Request({
     url:"api/article/delArr",
@@ -90,6 +94,7 @@ export function delArr(idArr:string){
     data:"idArr="+idArr
   })
 }
+//通过id查询文章
 export function findOne(id:number){
   return Request({
     url:"api/article/findOne",
@@ -99,6 +104,7 @@ export function findOne(id:number){
     }
   })
 }
+//更新文章状态
 export function updateStatus(id:number,status:number){
 
   return Request({

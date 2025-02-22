@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Clock } from '@element-plus/icons-vue'
+import { Clock, ArrowRight } from '@element-plus/icons-vue'
 import { findOne } from '@/api/article';
 import { useRoute } from 'vue-router';
 import { convertDate } from '@/utils/DateUntil'
@@ -14,6 +14,7 @@ const auth = ref('')
 const upTime = ref('')
 const type = ref()
 const tags = ref([])
+const comInfo = ref('')
 const handleCopyCodeSuccess = () => {
   ElMessage.success("复制成功")
 }
@@ -34,48 +35,55 @@ view()
 
 <template>
   <div class="wrappera">
-    <div>
-      <h1 class="title-size">{{ title }}</h1>
-      <div style="background-color: rgb(248, 248, 248); border-radius: 10px;">
-        <div style="padding: 10px;">
-          <span>作者：</span>
-          <span>{{ auth }}</span>
+    <el-breadcrumb :separator-icon="ArrowRight" style="margin: 20px;">
+      <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ title }}</el-breadcrumb-item>
+    </el-breadcrumb>
+    <h1 class="title-size">{{ title }}</h1>
+    <div style="background-color: rgb(248, 248, 248); border-radius: 10px;">
+      <div style="padding: 10px;">
+        <span>作者：</span>
+        <span>{{ auth }}</span>
 
-          <span>
-            <el-icon>
-              <Clock />
-            </el-icon>
-            于 {{ convertDate(upTime) }} 发布
-          </span>
-        </div>
-        <div style="padding: 10px;">
-          <span>分类专栏：</span>
-          <el-tag type="primary">
-            <template #default="">
-              {{
-                type === 1 ? '前端' :
-                  type === 2 ? '后端' :
-                    type === 3 ? '测试' :
-                      type === 4 ? '运维' :
-                        type === 5 ? '算法' :
-                          type === 6 ? '数据库' :
-                            type === 7 ? '工具' :
-                              type === 8 ? '其他' :
-                                type
-              }}
-            </template>
-          </el-tag>
-          <span>文章标签：</span>
-          <span v-for="(item, index) in tags" :key="index">
-            <el-tag type="primary" style="margin: 5px;">{{ item }}</el-tag>
-          </span>
-        </div>
+        <span>
+          <el-icon>
+            <Clock />
+          </el-icon>
+          于 {{ convertDate(upTime) }} 发布
+        </span>
       </div>
-
-      <div>
-        <v-md-preview :text="texts" @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
+      <div style="padding: 10px;">
+        <span>分类专栏：</span>
+        <el-tag type="primary">
+          <template #default="">
+            {{
+              type === 1 ? '前端' :
+                type === 2 ? '后端' :
+                  type === 3 ? '测试' :
+                    type === 4 ? '运维' :
+                      type === 5 ? '算法' :
+                        type === 6 ? '数据库' :
+                          type === 7 ? '工具' :
+                            type === 8 ? '其他' :
+                              type
+            }}
+          </template>
+        </el-tag>
+        <span>文章标签：</span>
+        <span v-for="(item, index) in tags" :key="index">
+          <el-tag type="primary" style="margin: 5px;">{{ item }}</el-tag>
+        </span>
       </div>
     </div>
+
+    <div>
+      <v-md-preview :text="texts" @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
+    </div>
+    <div style="border: 1px solid black;">
+      <el-input v-model="comInfo" style="width: 240px" placeholder="请输入评论" />
+      <el-button>评论</el-button>
+    </div>
+
   </div>
 
 </template>

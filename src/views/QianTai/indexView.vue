@@ -1,28 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { get } from '@/api/article'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { signIn } from '@/api/users'
+import { Search} from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import ArticleCard from '@/components/Mycomponents/ArticleCard.vue'
+import MessageBoard from '@/components/Mycomponents/MessageBoard.vue'
+import ToolsList from '@/components/Mycomponents/ToolsList.vue'
 const activeIndex = ref('1')
-const data = ref([])
-const total = ref(0)
 const currentPage1 = ref(1)
 const pageSize1 = ref(5)
 const router = useRouter();
+const searchData = ref('')
 const goMe = () => {
   router.push('/management')
 }
-const refreshList = () => {
-  get(currentPage1.value, pageSize1.value, 0).then((respon) => {
-    data.value = respon.data.data.list
-    total.value = respon.data.data.total
-  })
-}
-
 const signInto = () => {
-  signIn().then((respon) => {
+  signIn(currentPage1.value, pageSize1.value).then((respon) => {
     if (respon.data.code == "211") {
       ElMessage.success({
         message: respon.data.msg
@@ -31,7 +25,7 @@ const signInto = () => {
       ElMessage.error({
         message: respon.data.msg
       })
-    }else{
+    } else {
       router.push('/management')
       ElMessage.error({
         message: "未登录,正在前往登录"
@@ -39,24 +33,46 @@ const signInto = () => {
     }
   })
 }
-refreshList()
+const dateInfo = computed(()=>{
+  const hour:number = new Date().getHours()
+  if(hour>=5 && hour<=11){
+    return '早上好'
+  }else if(hour>11 && hour<=13){
+    return '中午好'
+  }else if(hour>13 && hour<=18){
+    return '下午好'
+  }else if(hour>18 && hour<=24){
+    return '晚上好'
+  }else {
+    return '凌晨啦'
+  }
+})
+
 </script>
 
 <template>
-  <div style="background-color: rgb(242, 243, 245);">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-menu-item index="3">留言</el-menu-item>
-      <el-menu-item index="4">分类</el-menu-item>
-      <el-menu-item index="2" @click="goMe">后台</el-menu-item>
+  <div style="background-color: rgb(242, 243, 245); height: 100vh;">
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
+      <el-menu-item index="1" @click="activeIndex = '1'">首页</el-menu-item>
+      <el-menu-item index="2" @click="activeIndex = '2'">留言</el-menu-item>
+      <el-menu-item index="3" @click="activeIndex = '3'">工具</el-menu-item>
+      <el-menu-item index="4" @click="goMe">后台</el-menu-item>
+      <el-input
+      size="small"
+      v-model="searchData"
+      style="width: 240px"
+      placeholder="关键字搜索"
+    /><el-button :icon="Search" style="height: 100%;" />
     </el-menu>
     <el-main>
       <div class="main-content">
-        <ArticleCard></ArticleCard>
+        <ArticleCard v-if="activeIndex == '1'"></ArticleCard>
+        <MessageBoard v-else-if="activeIndex == '2'"></MessageBoard>
+        <ToolsList v-else-if="activeIndex == '3'"></ToolsList>
         <div class="main-right">
           <el-card style="margin-bottom: 30px;">
             <div>
-              <h3>晚上好</h3>
+              <h3>{{ dateInfo }}</h3>
               <span>点亮在社区的每一天</span>
             </div>
             <el-button type="primary" plain @click="signInto">签到</el-button>

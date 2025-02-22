@@ -21,11 +21,13 @@ const infoValue = useTransition(info, {
 })
 
 getCount().then((respon) => {
-  user.value = respon.data.data.user
-  notice.value = respon.data.data.notice
-  article.value = respon.data.data.article
-  info.value = respon.data.data.info
-})
+    user.value = respon.data.data.user;
+    notice.value = respon.data.data.notice;
+    article.value = respon.data.data.article;
+    info.value = respon.data.data.info;
+}).catch((err) => {
+    console.error('请求出错:', err);
+});
 
 </script>
 

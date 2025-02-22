@@ -1,4 +1,5 @@
 import Request from '@/utils/Request'
+//获取后台管理的统计数量
 export function getCount(){
   return Request({
     url: 'api/getCount',

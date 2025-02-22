@@ -2,7 +2,15 @@
 import { ref } from 'vue'
 import { get } from '@/api/article'
 import { convertDate } from '@/utils/DateUntil'
-const data = ref([])
+type dataform = {
+  article_id:string,
+  article_title:string,
+  article_author:string,
+  publish_time:string,
+  article_tag:string,
+  article_cover:string
+}
+const data = ref <dataform[]>([])
 const total = ref(0)
 const currentPage1 = ref(1)
 const pageSize1 = ref(5)
@@ -22,9 +30,9 @@ const handleCurrentChange = () => {
 }
 const PushTime = (time: string) => {
   // 将传入的时间字符串转换为 Date 对象
-  const inputTime = new Date(time);
+  const inputTime = new Date(time).getTime();
   // 获取当前时间
-  const currentTime = new Date();
+  const currentTime = new Date().getTime();
   // 计算两个时间的时间差（单位：毫秒）
   const diff = currentTime - inputTime;
 
@@ -78,8 +86,8 @@ refreshList()
     <div v-for="(item, index) in data" :key="index"
       style="display: flex;border-bottom:1px solid rgba(228,230,235,0.5); justify-content: space-between;">
       <div style="display: flex; flex-direction: column; justify-content: space-around;">
-        <h5 style="white-space:nowrap;overflow: hidden;text-overflow: ellipsis;"><router-link
-            :to="`/article/${item.article_id}`">{{ item.article_title }}</router-link></h5>
+        <h3 style="white-space:nowrap;overflow: hidden;text-overflow: ellipsis;"><router-link
+            :to="`/article/${item.article_id}`" style="color: black;">{{ item.article_title }}</router-link></h3>
         <div style="display: flex; justify-content: space-between;">
           <span style="font-size: 15px;">{{ item.article_author }}</span>
           <span class="isShowTime">
@@ -111,12 +119,11 @@ refreshList()
 a {
   text-decoration: none;
 }
+.isShowTime{
+  margin:0 10px;
+}
 
 @media screen and (max-width: 600px) {
-
-  .isShowTime {
-    display: none;
-  }
 
   .isShowImg {
     display: none;

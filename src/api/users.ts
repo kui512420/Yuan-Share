@@ -102,9 +102,20 @@ export function updateInfo(id:number,username:string,status:number,type:number,p
   })
 }
 //签到
-export function signIn() {
+export function signIn(pagenow:number,pagesize:number,userid?:string) {
+  const params1={
+    pagenow:pagenow,
+    pagesize:pagesize,
+  }
+  const params2={
+    pagenow:pagenow,
+    pagesize:pagesize,
+    userid:userid
+  }
+
   return Request({
     url: 'api/user/signin',
-    method: 'get'
+    method: 'get',
+    params:userid==undefined?params1:params2
   })
 }
