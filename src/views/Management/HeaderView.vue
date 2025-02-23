@@ -2,6 +2,7 @@
   <div class="wrapper">
     <div class="left">
       <strong>博客管理系统</strong>
+      <a href="/" style="text-decoration: none;">去前台</a>
       <el-icon size="30" style="margin-left: 90px;" @click="changec">
         <Fold />
       </el-icon>

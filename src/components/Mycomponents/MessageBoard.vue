@@ -1,25 +1,48 @@
 <script lang="ts" setup>
+  import {add,get} from '@/api/notes'
+import { ref, onBeforeUnmount, onMounted } from 'vue'
+import {convertDate} from '@/utils/DateUntil'
+import { ElMessage } from 'element-plus';
+const txt = ref('')
+const timer = ref();
+type msg = {
+  nickname:string,
+  info:string,
+  time:string,
+  headsrc:string
+}
+const msfObj = ref<msg[]>([])
+const addmsg = ()=>{
+  add(txt.value).then(()=>{
+    ElMessage.success("发布成功")
+  })
+}
+const getmsg = ()=>{
+  get().then((res)=>{
+    msfObj.value = res.data.date
+  })
+}
+getmsg()
+onMounted(()=>{
+  timer.value = setInterval(()=>{
+  getmsg()
+},3000)
+
+onBeforeUnmount(()=>{
+    clearInterval(timer.value);
+    timer.value = null
+  })
+})
 
 </script>
 
 <template>
-  <el-timeline style="max-width: 600px">
-    <el-timeline-item timestamp="2018/4/12" placement="top">
+  <el-timeline>
+    <textarea v-model="txt"></textarea> <el-button plain @click="addmsg">发言</el-button>
+    <el-timeline-item v-for="(item,index) in msfObj" :key="index" :timestamp=convertDate(item.time) placement="top" >
       <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/12 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/3" placement="top">
-      <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/3 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/2" placement="top">
-      <el-card>
-        <h4>Update Github template</h4>
-        <p>Tom committed 2018/4/2 20:46</p>
+        <div><img style="border-radius: 50%;" width="32" height="32" :src=item.headsrc alt="无头像"> {{item.nickname}}：</div>
+        <p>{{ item.info }}</p>
       </el-card>
     </el-timeline-item>
   </el-timeline>

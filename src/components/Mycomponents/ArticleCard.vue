@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { get } from '@/api/article'
+import { ref,defineProps, watch} from 'vue'
+import { get,like } from '@/api/article'
 import { convertDate } from '@/utils/DateUntil'
 type dataform = {
   article_id:string,
@@ -23,10 +23,18 @@ const refreshList = () => {
 }
 //分页回调
 const handleSizeChange = () => {
-  refreshList()
+  if(props.searchData){
+    doSomething(props.searchData)
+  }else{
+    refreshList()
+  }
 }
 const handleCurrentChange = () => {
-  refreshList()
+  if(props.searchData){
+    doSomething(props.searchData)
+  }else{
+    refreshList()
+  }
 }
 const PushTime = (time: string) => {
   // 将传入的时间字符串转换为 Date 对象
@@ -78,6 +86,33 @@ const PushTime = (time: string) => {
   }
 }
 
+const props = defineProps({
+  searchData: {
+    type: String,
+    default: ''
+  }
+});
+
+// 定义一个函数，当接收到的值变化时执行
+const doSomething = (txt:string) => {
+  likes(txt)
+  // 这里可以添加更多的逻辑
+};
+
+// 监听 inputValue 的变化
+watch(() => props.searchData, (newValue) => {
+  if (newValue) {
+    doSomething(newValue);
+  }else{
+    refreshList()
+  }
+});
+const likes = (txt:string)=>{
+  like(currentPage1.value, pageSize1.value, txt).then((respon) => {
+    data.value = respon.data.data.list
+    total.value = respon.data.data.total
+  })
+}
 refreshList()
 </script>
 

@@ -138,7 +138,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
       </el-form-item>
 
       <el-form-item prop="nickname">
-        <el-input v-model="RuleForm.nickname" style="width: 240px"  placeholder="请输入名称" show-password
+        <el-input v-model="RuleForm.nickname" style="width: 240px"  placeholder="请输入名称" 
           :prefix-icon="User" />
       </el-form-item>
 

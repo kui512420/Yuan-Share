@@ -16,18 +16,6 @@ export function add(article_title:string,article_cover:string,article_tag:string
 //获取文章列表
 export function get(pagenow:number,pageCount:number,type:number,inputData?:string,article_type?:number){
   let params = {}
-  /*
-{
-      pagenow:pagenow,
-      pageCount:pageCount,
-      type:type,
-      title:inputData,
-      article_id:inputData,
-      tag:inputData,
-      auth_id:inputData,
-      article_type:article_type
-    }
-  */
   if(type==1){
     params = {
       pagenow:pagenow,
@@ -113,6 +101,43 @@ export function updateStatus(id:number,status:number){
     params:{
       id:id,
       status:status
+    }
+  })
+}
+//评论
+export function commentAdd(user_id:number,comment_content:string,article_id:number,){
+
+  return Request({
+    url:"api/comment/add",
+    method:"post",
+    data:{
+      user_id:user_id,
+      comment_content:comment_content,
+      article_id:article_id
+    }
+  })
+}
+//获取评论
+export function commentGet(article_id:number){
+
+  return Request({
+    url:"api/comment/getComment",
+    method:"get",
+    params:{
+      article_id:article_id
+    }
+  })
+}
+//模糊查询
+export function like(pagenow:number,pageCount:number,txt:string){
+
+  return Request({
+    url:"api/article/like",
+    method:"get",
+    params:{
+      pagenow:pagenow,
+      pageCount:pageCount,
+      txt:txt
     }
   })
 }

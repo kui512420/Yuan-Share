@@ -206,6 +206,7 @@ interface editFormDatain {
   id: number,
   username: string,
   password: string,
+  nickname:string
   headsrc: string,
   status: number,
   type: number,
@@ -533,7 +534,7 @@ const updateInfos = () => {
   } else {
     statusnum = 0
   }
-  updateInfo(parseInt(editFormData.id), editFormData.username, statusnum, parseInt(radio1.value), editFormData.password).then((respon) => {
+  updateInfo(parseInt(editFormData.id), editFormData.username, statusnum, parseInt(radio1.value), editFormData.password,editFormData.nickname).then((respon) => {
 
     if (respon.data.data == true) {
       ElMessage.success({

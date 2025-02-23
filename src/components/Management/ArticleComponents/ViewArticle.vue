@@ -8,7 +8,6 @@ import { convertDate } from '@/utils/DateUntil'
 const useShare = useShareStore()
 // 获取动态路由参数中的 ID
 const articleId = useShare.article_id;
-
 const texts = ref('')
 const title = ref('')
 const auth = ref('')
@@ -72,8 +71,7 @@ view()
           </span>
         </div>
       </div>
-
-      <div>
+      <div >
         <v-md-preview :text="texts" @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
       </div>
     </div>

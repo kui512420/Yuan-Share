@@ -21,8 +21,8 @@ const goRegister = ()=>{
 
 const imgSrc = ref('api/code/captcha?t=')
 const RuleForm = reactive<RuleForm>({
-  username: '撒旦',
-  password: '撒旦',
+  username: '',
+  password: '',
   code: ''
 })
 
@@ -98,7 +98,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
             //设置token
             window.sessionStorage.removeItem("token")
             window.sessionStorage.setItem("token",respon.data.data)
-            router.push("/management/home/index")
+            router.push("/")
           } else {
             changeImg()
             ElMessage({
@@ -136,7 +136,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input v-model="RuleForm.password" style="width: 240px" type="password" placeholder="password" show-password
+        <el-input v-model="RuleForm.password" style="width: 240px" type="password" placeholder="请输入密码" show-password
           :prefix-icon="Lock" />
       </el-form-item>
       <el-form-item prop="code">

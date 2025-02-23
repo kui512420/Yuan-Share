@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
+import {convertDate} from '@/utils/DateUntil'
 import { Clock, ArrowRight } from '@element-plus/icons-vue'
-import { findOne } from '@/api/article';
+import { findOne, commentAdd,commentGet } from '@/api/article';
+import { getUserInfo } from '@/api/home';
 import { useRoute } from 'vue-router';
-import { convertDate } from '@/utils/DateUntil'
+// 获取动态路由参数中的 ID
 // 获取动态路由参数中的 ID
 const route = useRoute();
-const articleId = route.params.id;
+const articleId = route.params.id  as string;
 const texts = ref('')
 const title = ref('')
 const auth = ref('')
@@ -15,6 +17,17 @@ const upTime = ref('')
 const type = ref()
 const tags = ref([])
 const comInfo = ref('')
+type comAllType = {
+  article_id:number,
+  headsrc:string,
+  user_id:number,
+  nickname:string,
+  comment_date:string,
+  comment_content:string,
+  id:number
+}
+const comAll = ref<comAllType[]>([])
+
 const handleCopyCodeSuccess = () => {
   ElMessage.success("复制成功")
 }
@@ -29,8 +42,21 @@ const view = () => {
     tags.value = JSON.parse(respon.data.data.article_tag)
   })
 }
+const comment = () => {
+  getUserInfo().then((res) => {
+    commentAdd(parseInt(res.data.data.id), comInfo.value, parseInt(articleId)).then(() => {
+      ElMessage.success("评论成功")
+      commentGets()
+    })
+  })
+}
+const commentGets = ()=>{
+  commentGet(parseInt(articleId)).then((res)=>{
+    comAll.value = res.data.data
+  })
+}
 view()
-
+commentGets()
 </script>
 
 <template>
@@ -76,12 +102,21 @@ view()
       </div>
     </div>
 
-    <div>
+    <div style=" border-bottom: 1px solid black;">
       <v-md-preview :text="texts" @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
     </div>
-    <div style="border: 1px solid black;">
+    <div>
+      <h2>评论区</h2>
       <el-input v-model="comInfo" style="width: 240px" placeholder="请输入评论" />
-      <el-button>评论</el-button>
+      <el-button @click="comment">评论</el-button>
+      <ul>
+        <li v-for="(item,index) in comAll" :key="index">
+          <img :src=item.headsrc alt="" width="40px" style="border-radius: 50%;">
+          <span>{{ item.nickname}}</span>
+          <span> 评论于：{{convertDate(item.comment_date)}}</span>
+          <div>{{ item.comment_content }}</div>
+        </li>
+      </ul>
     </div>
 
   </div>
@@ -104,7 +139,7 @@ view()
   }
 
   .wrappera {
-    padding: 10px;
+    padding: 5px;
   }
 }
 </style>

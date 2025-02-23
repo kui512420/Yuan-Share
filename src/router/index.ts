@@ -29,6 +29,7 @@ const router = createRouter({
         keepAlive: false,
       },
     },
+
     {
       path: '/management/Home',
       name: 'home',
@@ -43,6 +44,14 @@ const router = createRouter({
         { path: 'Article/Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
         { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
         { path: 'SigninLog', name:'signinLog',component: () => import('@/components/Management/LogComponents/SigninLogList.vue') },
+        {
+          path: '/management/setting',
+          name: 'person',
+          component: () => import('../components/Management/SettingComponents/PersonComponent.vue'),
+          meta: {
+            keepAlive: false,
+          },
+        },
       ],
       meta: {
         keepAlive: false,
@@ -51,16 +60,6 @@ const router = createRouter({
 
   ],
 })
-// 全局前置守卫
-router.beforeEach((to, from, next) => {
-  // 用户是否登录的状态
-  const isLoggedIn = window.sessionStorage.getItem('token');
-  if (to.name === 'edit' && isLoggedIn==null) {
-    // 如果用户未登录且要访问 edit 页面，重定向到 Home 页面
-    next({ name: 'Login' });
-  }else{
-    next();
-  }
-});
+
 
 export default router

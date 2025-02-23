@@ -69,7 +69,7 @@
         </template>
       </el-menu-item>
 
-      <el-menu-item index="6">
+      <el-menu-item index="6" @click="navigateTo('management/setting')">
         <el-icon>
           <Setting />
         </el-icon>

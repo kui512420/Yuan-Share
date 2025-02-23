@@ -60,15 +60,14 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   return true
 }
 
-const uploadArticle = (event:never, insertImage:InsertImageFunction, files: File[]) => {
+const uploadArticle = (event: never, insertImage: InsertImageFunction, files: File[]) => {
 
   const formData = new FormData();
   formData.append('type', "2");
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url:
-        'http://localhost:5173/' + respon.data.msg,
+      url: "http://127.0.0.1:5000/"+respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',

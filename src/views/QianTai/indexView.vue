@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router';
-import { signIn } from '@/api/users'
-import { Search} from '@element-plus/icons-vue'
+import { signIns } from '@/api/users'
 import { ElMessage } from 'element-plus'
 import ArticleCard from '@/components/Mycomponents/ArticleCard.vue'
 import MessageBoard from '@/components/Mycomponents/MessageBoard.vue'
 import ToolsList from '@/components/Mycomponents/ToolsList.vue'
 const activeIndex = ref('1')
-const currentPage1 = ref(1)
-const pageSize1 = ref(5)
 const router = useRouter();
 const searchData = ref('')
 const goMe = () => {
   router.push('/management')
 }
 const signInto = () => {
-  signIn(currentPage1.value, pageSize1.value).then((respon) => {
+  signIns().then((respon) => {
     if (respon.data.code == "211") {
       ElMessage.success({
         message: respon.data.msg
@@ -33,6 +30,20 @@ const signInto = () => {
     }
   })
 }
+const datato = () => {
+    // 创建指定日期的 Date 对象
+    const targetDate = new Date('2024-07-08');
+    // 获取当前日期的 Date 对象
+    const currentDate = new Date();
+    // 获取两个日期的时间戳（毫秒数）
+    const targetTimestamp = targetDate.getTime();
+    const currentTimestamp = currentDate.getTime();
+    // 计算时间差（毫秒数）
+    const timeDifference = currentTimestamp - targetTimestamp;
+    // 将时间差转换为天数
+    const daysDifference = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
+    return daysDifference;
+};
 const dateInfo = computed(()=>{
   const hour:number = new Date().getHours()
   if(hour>=5 && hour<=11){
@@ -51,7 +62,7 @@ const dateInfo = computed(()=>{
 </script>
 
 <template>
-  <div style="background-color: rgb(242, 243, 245); height: 100vh;">
+  <div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1" @click="activeIndex = '1'">首页</el-menu-item>
       <el-menu-item index="2" @click="activeIndex = '2'">留言</el-menu-item>
@@ -62,12 +73,12 @@ const dateInfo = computed(()=>{
       v-model="searchData"
       style="width: 240px"
       placeholder="关键字搜索"
-    /><el-button :icon="Search" style="height: 100%;" />
+    />
     </el-menu>
     <el-main>
       <div class="main-content">
-        <ArticleCard v-if="activeIndex == '1'"></ArticleCard>
-        <MessageBoard v-else-if="activeIndex == '2'"></MessageBoard>
+        <ArticleCard v-if="activeIndex == '1'" :searchData="searchData"></ArticleCard>
+        <MessageBoard v-else-if="activeIndex == '2'"  style="flex-grow: 2; max-height: 100vh;overflow-y: scroll;"></MessageBoard>
         <ToolsList v-else-if="activeIndex == '3'"></ToolsList>
         <div class="main-right">
           <el-card style="margin-bottom: 30px;">
@@ -85,8 +96,12 @@ const dateInfo = computed(()=>{
               <span><a href="https://github.com/kui512420/Vue-management">github：kui512420</a></span>
             </div>
             <div>
+              本站已经运行：{{ datato() }} 天
+            </div>
+            <div>
               <a href="https://beian.miit.gov.cn">豫ICP备2024077864号</a>
             </div>
+
           </el-card>
         </div>
       </div>

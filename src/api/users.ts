@@ -21,6 +21,16 @@ export function findOne(id:number) {
     }
   })
 }
+//查询单个用户(包含密码)
+export function find(id:number) {
+  return Request({
+    url: 'api/users/find',
+    method: 'get',
+    params:{
+      id:id
+    }
+  })
+}
 
 //通过id查询用户
 export function queryById(id:number) {
@@ -88,7 +98,7 @@ export function updateStatus(id:number,username:string,status:number) {
 }
 
 //更新用户部分信息
-export function updateInfo(id:number,username:string,status:number,type:number,password:string) {
+export function updateInfo(id:number,username:string,status:number,type:number,password:string,nickname:string) {
   return Request({
     url: 'api/users/updateInfo',
     method: 'put',
@@ -97,11 +107,27 @@ export function updateInfo(id:number,username:string,status:number,type:number,p
       username:username,
       status:status,
       type:type,
-      password:password
+      password:password,
+      nickname:nickname
     }
   })
 }
-//签到
+//更新用户部分信息
+export function updateInfo2(id:number,username:string,status:number,type:number,password:string,nickname:string) {
+  return Request({
+    url: 'api/users/updateInfo2',
+    method: 'put',
+    data:{
+      id:id,
+      username:username,
+      status:status,
+      type:type,
+      password:password,
+      nickname:nickname
+    }
+  })
+}
+//签到列表
 export function signIn(pagenow:number,pagesize:number,userid?:string) {
   const params1={
     pagenow:pagenow,
@@ -117,5 +143,12 @@ export function signIn(pagenow:number,pagesize:number,userid?:string) {
     url: 'api/user/signin',
     method: 'get',
     params:userid==undefined?params1:params2
+  })
+}
+//签到
+export function signIns() {
+  return Request({
+    url: 'api/user/signinInfo',
+    method: 'get'
   })
 }
