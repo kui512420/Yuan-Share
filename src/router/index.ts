@@ -29,7 +29,6 @@ const router = createRouter({
         keepAlive: false,
       },
     },
-
     {
       path: '/management/Home',
       name: 'home',
@@ -41,6 +40,7 @@ const router = createRouter({
         { path: 'Article/ViewArticle', name:'view',component: () => import('@/components/Management/ArticleComponents/ViewArticle.vue') },
         { path: 'Article/ArticleList', component: () => import('@/components/Management/ArticleComponents/ArticleList.vue')},
         { path: 'User/UserList', component: () => import('@/components/Management/UserComponests/UserList.vue')},
+        { path: 'Article/Add', name:'add',component: () => import('@/components/Management/ArticleComponents/AddMark.vue') },
         { path: 'Article/Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
         { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
         { path: 'SigninLog', name:'signinLog',component: () => import('@/components/Management/LogComponents/SigninLogList.vue') },

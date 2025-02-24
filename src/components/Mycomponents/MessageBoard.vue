@@ -15,6 +15,7 @@ const msfObj = ref<msg[]>([])
 const addmsg = ()=>{
   add(txt.value).then(()=>{
     ElMessage.success("发布成功")
+    txt.value = ''
   })
 }
 const getmsg = ()=>{
@@ -38,7 +39,7 @@ onBeforeUnmount(()=>{
 
 <template>
   <el-timeline>
-    <textarea v-model="txt"></textarea> <el-button plain @click="addmsg">发言</el-button>
+    <textarea v-model="txt" @keydown.enter="addmsg"></textarea> <el-button plain @click="addmsg">发言</el-button>
     <el-timeline-item v-for="(item,index) in msfObj" :key="index" :timestamp=convertDate(item.time) placement="top" >
       <el-card>
         <div><img style="border-radius: 50%;" width="32" height="32" :src=item.headsrc alt="无头像"> {{item.nickname}}：</div>

@@ -42,6 +42,8 @@ const view = () => {
     tags.value = JSON.parse(respon.data.data.article_tag)
   })
 }
+
+
 const comment = () => {
   getUserInfo().then((res) => {
     commentAdd(parseInt(res.data.data.id), comInfo.value, parseInt(articleId)).then(() => {

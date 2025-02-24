@@ -22,7 +22,7 @@
 
     <el-button type="danger" @click="delMore(selectionarr)">批量删除</el-button>
     <el-button type="info" @click="reset">重置</el-button>
-    <el-button type="success" @click="goEdit">添加文章</el-button>
+    <el-button type="success" @click="goAdd">添加文章</el-button>
   </div>
 
 
@@ -91,7 +91,7 @@
     </el-table-column>
     <el-table-column property="option" label="操作" width="250">
       <template #default="scope">
-        <el-button type="info" :icon="Edit" circle />
+        <el-button type="info" :icon="Edit" circle @click="goEdit(scope.row.article_id)"/>
         <el-button type="danger" :icon="Delete" circle @click="del(scope.row.article_id)" />
         <el-button type="primary" :icon="View" circle @click="goView(scope.row.article_id)"/>
 
@@ -148,8 +148,12 @@ interface editFormDatain {
   article_id: number
 }
 
-const goEdit = ()=>{
-  router.replace("/management/home/Article/Edit")
+const goAdd= ()=>{
+  router.push("/management/home/Article/Add")
+}
+const goEdit= (id:number)=>{
+  router.push("/management/home/Article/Edit")
+  useShare.setArticle_id(id)
 }
 const goView = (id:number)=>{
   router.push('/management/home/Article/ViewArticle')
