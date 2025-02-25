@@ -14,7 +14,7 @@ export function add(article_title:string,article_cover:string,article_tag:string
   })
 }
 //获取文章列表
-export function get(pagenow:number,pageCount:number,type:number,inputData?:string,article_type?:number){
+export function get(pagenow:number,pageCount:number,type:number,inputData?:string,article_type?:number,article_status?:number){
   let params = {}
   if(type==1){
     params = {
@@ -55,7 +55,8 @@ export function get(pagenow:number,pageCount:number,type:number,inputData?:strin
     params = {
       pagenow:pagenow,
       pageCount:pageCount,
-      type:type
+      type:type,
+      article_status:article_status
     }
   }
   return Request({

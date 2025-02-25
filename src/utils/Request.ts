@@ -9,7 +9,8 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  const token = window.sessionStorage.getItem('token')
+
+  const token = window.localStorage.getItem('token')
   if(token=="" || token==null || token==undefined){
     router.push('/management')
   }
@@ -26,7 +27,7 @@ instance.interceptors.response.use(function (response) {
       message:response.data.msg
     })
     router.push('/management')
-    window.sessionStorage.removeItem('token')
+    window.localStorage.removeItem('token')
   }
 
   if(response.data.code==206){

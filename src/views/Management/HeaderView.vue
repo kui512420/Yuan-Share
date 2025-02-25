@@ -19,6 +19,7 @@
       <el-avatar :src="headImg" />
       <el-switch v-model="isDark" inline-prompt active-text="dark" size="large" inactive-text="light"
         @change="toggleDark"></el-switch>
+        <el-button @click="outLogin">退出登录</el-button>
     </div>
   </div>
 </template>
@@ -45,6 +46,10 @@ const shareStore = useShareStore();
 const changec = () => {
   shareStore.changeCollapse();
 };
+const outLogin = ()=>{
+  window.localStorage.removeItem('token')
+  window.location.reload()
+}
 const getUserIn = () => {
   getUserInfo().then((respon) => {
     nickname.value = respon.data.data.nickname

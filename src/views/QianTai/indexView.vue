@@ -66,7 +66,7 @@ const dateInfo = computed(()=>{
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1" @click="activeIndex = '1'">首页</el-menu-item>
       <el-menu-item index="2" @click="activeIndex = '2'">留言</el-menu-item>
-      <el-menu-item index="3" @click="activeIndex = '3'">工具</el-menu-item>
+      <el-menu-item index="3" @click="activeIndex = '3'">待更新</el-menu-item>
       <el-menu-item index="4" @click="goMe">后台</el-menu-item>
       <el-input
       size="small"

@@ -51,7 +51,7 @@
           <el-menu-item index="3-2" @click="navigateTo('management/home/SigninLog')">签到日志</el-menu-item>
         </el-menu-item-group>
       </el-sub-menu>
-      <el-menu-item index="4">
+      <el-menu-item index="4" @click="navigateTo('management/home/Message')">
         <el-icon>
           <Message />
         </el-icon>

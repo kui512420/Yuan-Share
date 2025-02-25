@@ -16,3 +16,14 @@ export function get(){
     method:"get"
   })
 }
+//留言列表
+export function getAll(pageNow:number,pageSize:number){
+  return Request({
+    url:"api/info/getAll",
+    method:"get",
+    params:{
+      pageNow:pageNow,
+      pageSize:pageSize
+    }
+  })
+}

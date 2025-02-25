@@ -44,6 +44,7 @@ const router = createRouter({
         { path: 'Article/Edit', name:'edit',component: () => import('@/components/Management/ArticleComponents/EditMark.vue') },
         { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
         { path: 'SigninLog', name:'signinLog',component: () => import('@/components/Management/LogComponents/SigninLogList.vue') },
+        { path: 'Message', name:'message',component: () => import('@/components/Management/MessageComponents/MessageList.vue') },
         {
           path: '/management/setting',
           name: 'person',

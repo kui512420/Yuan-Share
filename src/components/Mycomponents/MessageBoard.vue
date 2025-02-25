@@ -20,7 +20,7 @@ const addmsg = ()=>{
 }
 const getmsg = ()=>{
   get().then((res)=>{
-    msfObj.value = res.data.date
+    msfObj.value = res.data.data
   })
 }
 getmsg()

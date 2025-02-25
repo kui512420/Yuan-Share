@@ -338,6 +338,7 @@ const edit = (id: number) => {
 
 
 
+
   findOne(id).then((respon) => {
     const data = respon.data.data
     editFormData.id = data.id
@@ -346,13 +347,14 @@ const edit = (id: number) => {
     editFormData.password = data.password
     editFormData.headsrc = data.headsrc
     editFormData.status = data.status
-    editFormData.type = data.type
     editFormData.register_time = data.register_time
     editFormData.last_login = data.last_login
     editFormData.bean = data.bean
-    setTimeout(() => {
+    if(respon.data.code!==206){
+      setTimeout(() => {
       //打开抽屉
       drawer.value = true
+
       //状态开关
       if (editFormData.status == "1") {
         editStatus.value = true
@@ -362,6 +364,8 @@ const edit = (id: number) => {
       //身份
       radio1.value = editFormData.type + ""
     }, 300)
+    }
+
   })
 }
 //删除多个用户
@@ -389,7 +393,7 @@ const delMore = (idArr: Array<number>) => {
         const data = idArr.toString().replace("[", "").replace("]", "")
 
         delArr(data).then((respon) => {
-          if (respon.data.data >= 1) {
+          if (respon.data.data >= 1 && respon.data.data <=100000) {
             ElMessage({
               type: 'success',
               message: '删除了' + respon.data.data + "条数据",
@@ -535,7 +539,6 @@ const updateInfos = () => {
     statusnum = 0
   }
   updateInfo(parseInt(editFormData.id), editFormData.username, statusnum, parseInt(radio1.value), editFormData.password,editFormData.nickname).then((respon) => {
-
     if (respon.data.data == true) {
       ElMessage.success({
         message: "修改信息成功"

@@ -16,7 +16,7 @@ const currentPage1 = ref(1)
 const pageSize1 = ref(5)
 
 const refreshList = () => {
-  get(currentPage1.value, pageSize1.value, 0).then((respon) => {
+  get(currentPage1.value, pageSize1.value, 0,"",5,11).then((respon) => {
     data.value = respon.data.data.list
     total.value = respon.data.data.total
   })

@@ -94,9 +94,9 @@ const submitForm = async (form1: FormInstance | undefined) => {
               type: 'success',
             })
             //设置token
-            window.sessionStorage.removeItem("token")
-            window.sessionStorage.setItem("token",respon.data.data)
-            //router.push("/management/home/index")
+            window.localStorage.removeItem("token")
+            window.localStorage.setItem("token",respon.data.data)
+            router.push("/management/home/index")
           } else {
             changeImg()
             router.push("/management/register")
@@ -138,7 +138,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
       </el-form-item>
 
       <el-form-item prop="nickname">
-        <el-input v-model="RuleForm.nickname" style="width: 240px"  placeholder="请输入名称" 
+        <el-input v-model="RuleForm.nickname" style="width: 240px"  placeholder="请输入名称"
           :prefix-icon="User" />
       </el-form-item>
 

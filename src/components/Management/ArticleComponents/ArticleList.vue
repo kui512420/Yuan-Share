@@ -196,7 +196,7 @@ const refreshList = (isSearch?: boolean) => {
   if (isSearch == true) {
     Searchtype = parseInt(select.value)
   }
-  get(currentPage1.value, pageSize1.value, Searchtype, searchData.value, article_type1).then((respon) => {
+  get(currentPage1.value, pageSize1.value, Searchtype, searchData.value, article_type1,10).then((respon) => {
     const JsonArticle = respon.data.data
     tableData.value = JsonArticle.list
     total.value = parseInt(JsonArticle.total)
@@ -269,7 +269,7 @@ const delMore = (idArr: Array<number>) => {
       .then(() => {
         const data = idArr.toString().replace("[", "").replace("]", "")
         delArr(data).then((respon) => {
-          if (respon.data.data >= 1) {
+          if (respon.data.data >= 1 && respon.data.data <100000) {
             ElMessage({
               type: 'success',
               message: '删除了' + respon.data.data + "条数据",
