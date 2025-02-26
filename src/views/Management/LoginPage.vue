@@ -125,7 +125,7 @@ const submitForm = async (form1: FormInstance | undefined) => {
 
 <template>
   <div class="wrapper">
-    <el-form ref="ruleFormRef" :model="RuleForm" :rules="cheakRules" class="login-form" label-width="100px"
+    <el-form ref="ruleFormRef" :model="RuleForm" :rules="cheakRules" class="login-form" label-width="auto"
       style="max-width: 600px" >
       <h2 class="login-title">登录</h2>
       <el-form-item prop="username">

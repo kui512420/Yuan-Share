@@ -7,7 +7,7 @@
         </el-select>
       </template>
       <template #append>
-        <el-button :icon="Search" @click="GetsignInfo(search)" />
+        <el-button :icon="Search"/>
       </template>
     </el-input>
     <el-button type="info" @click="reset">重置</el-button>

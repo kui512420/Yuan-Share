@@ -92,7 +92,7 @@
     <el-table-column property="option" label="操作" width="250">
       <template #default="scope">
         <el-button type="info" :icon="Edit" circle @click="goEdit(scope.row.article_id)"/>
-        <el-button type="danger" :icon="Delete" circle @click="del(scope.row.article_id)" />
+        <el-button type="danger" :icon="Delete" circle @click="del(scope.row.article_id,scope.row.article_author)" />
         <el-button type="primary" :icon="View" circle @click="goView(scope.row.article_id)"/>
 
         <el-dropdown style="margin-left: 5px;">
@@ -103,8 +103,8 @@
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="updateSt(scope.row.article_id,1)">上架</el-dropdown-item>
-              <el-dropdown-item @click="updateSt(scope.row.article_id,0)">下架</el-dropdown-item>
+              <el-dropdown-item @click="updateSt(scope.row.article_id,1,scope.row.article_author)">上架</el-dropdown-item>
+              <el-dropdown-item @click="updateSt(scope.row.article_id,0,scope.row.article_author)">下架</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -127,7 +127,7 @@
 import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { ArrowDown ,View} from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { get, delOne, delArr,updateStatus } from '@/api/article'
+import { get, delOne, delArr,updateStatus} from '@/api/article'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
 import router from '@/router'
@@ -159,6 +159,7 @@ const goView = (id:number)=>{
   router.push('/management/home/Article/ViewArticle')
   useShare.setArticle_id(id)
 }
+
 
 
 //刷新列表
@@ -214,7 +215,7 @@ const handleCurrentChange = () => {
 }
 
 //删除单个文章
-const del = (id: number) => {
+const del = (id: number,username:string) => {
   ElMessageBox.confirm(
     '确认删除？',
     '提示',
@@ -226,7 +227,7 @@ const del = (id: number) => {
     }
   )
     .then(() => {
-      delOne(id).then((respon) => {
+      delOne(id,username).then((respon) => {
         if (respon.data.data == '1') {
           ElMessage({
             type: 'success',
@@ -305,11 +306,13 @@ const reset = () => {
   refreshList()
 }
 //更改状态
-const updateSt = (id:number,status:number)=>{
+const updateSt = (id:number,status:number,username:string)=>{
 
-  updateStatus(id,status).then((respon)=>{
-    ElMessage.success(respon.data.msg)
-    refreshList()
+  updateStatus(id,status,username).then((respon)=>{
+    if(respon.data.code!==206){
+      ElMessage.success(respon.data.msg)
+      refreshList()
+    }
   })
 
 }

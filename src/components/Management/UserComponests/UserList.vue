@@ -232,8 +232,8 @@ const uploadIm = (params: UploadParams) => {
 
 //上传前的校验钩子
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png' && rawFile.type !== 'image/gif' && rawFile.type !== 'image/jpg') {
-    ElMessage.error('只能上传【image/jpeg,image/png,image/gif,image/jpg】格式的图片')
+  if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png' &&  rawFile.type !== 'image/jpg') {
+    ElMessage.error('只能上传【image/jpeg,image/png,image/jpg】格式的图片')
     return false
   } else if (rawFile.size / 1024 / 1024 > 10) {
     ElMessage.error('最大 10MB!')
@@ -349,6 +349,7 @@ const edit = (id: number) => {
     editFormData.status = data.status
     editFormData.register_time = data.register_time
     editFormData.last_login = data.last_login
+    editFormData.type = data.type
     editFormData.bean = data.bean
     if(respon.data.code!==206){
       setTimeout(() => {

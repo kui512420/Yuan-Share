@@ -6,21 +6,21 @@ import { uploadImg } from '@/api/home'
 import { Plus } from '@element-plus/icons-vue'
 import HotCover from '@/components/Mycomponents/HotCover.vue'
 import { useShareStore } from '@/stores/counter';
-import { findOne } from '@/api/article'
+import { findOne, updateAll } from '@/api/article'
 import type { UploadProps } from 'element-plus'
-import {convertDate} from '@/utils/DateUntil'
+import { convertDate } from '@/utils/DateUntil'
 
 const sharedDataStore = useShareStore();
 const text = ref('')
 // 获取动态路由参数中的 ID
 const articleId = sharedDataStore.article_id;
 const imageUrl = computed(() => sharedDataStore.HotCoverImgSrc);
-const article_src = ref(imageUrl)
 const inputTag = ref([])
 const title = ref('')
 const articleType = ref()
 const lataDa = ref('')
 const publicDa = ref('')
+const authorid = ref()
 interface UploadParams {
   file: File;
   data: {
@@ -35,15 +35,16 @@ type ImageInsertOptions = {
 };
 type InsertImageFunction = (options: ImageInsertOptions) => void;
 
-const getOne = ()=>{
-  findOne(articleId).then((res)=>{
+const getOne = () => {
+  findOne(articleId).then((res) => {
     title.value = res.data.data.article_title
     inputTag.value = JSON.parse(res.data.data.article_tag)
-    articleType.value = res.data.data.article_type+""
+    articleType.value = res.data.data.article_type + ""
     text.value = res.data.data.article_content
     sharedDataStore.HotCoverImgSrc = res.data.data.article_cover
     lataDa.value = res.data.data.last_time
-    publicDa.value =  res.data.data.publish_time
+    publicDa.value = res.data.data.publish_time
+    authorid.value = res.data.data.article_author
   })
 }
 getOne()
@@ -69,7 +70,7 @@ const uploadArticle = (event: never, insertImage: InsertImageFunction, files: Fi
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url: "https://kuikui.space/"+respon.data.msg,
+      url: "https://kuikui.space/" + respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',
@@ -91,7 +92,7 @@ const uploadIm = (params: UploadParams) => {
     })
   })
 }
-const addArticle = () => {
+const updateAl = () => {
   // 去除首尾的方括号
   const trimmedStr = inputTag.value + "".slice(1, -1);
   // 使用逗号分割字符串
@@ -121,10 +122,8 @@ const addArticle = () => {
       type: 'warning',
     })
   } else {
-    ElNotification({
-      title: 'Warning',
-      message: '功能正在完善中',
-      type: 'warning',
+    updateAll(articleId, title.value, arr, text.value, articleType.value, authorid.value).then((res) => {
+      ElMessage.success(res.data.msg)
     })
   }
 
@@ -164,14 +163,14 @@ const addArticle = () => {
       <HotCover></HotCover>
     </el-form-item>
     <el-form-item>
-      <v-md-editor v-model="text" height="400px" :disabled-menus="[]"  @upload-image="uploadArticle"
+      <v-md-editor v-model="text" height="400px" :disabled-menus="[]" @upload-image="uploadArticle"
         @copy-code-success="handleCopyCodeSuccess"></v-md-editor>
     </el-form-item>
     <el-form-item>
-      <span>创建时间：{{convertDate( publicDa) }}</span>
+      <span>创建时间：{{ convertDate(publicDa) }}</span>
 
-      <span>上次更新时间：{{  convertDate(lataDa) }}</span>
-      <el-button type="primary" round style="margin: 0 auto;" @click="addArticle">更新文章</el-button>
+      <span>上次更新时间：{{ convertDate(lataDa) }}</span>
+      <el-button type="primary" round style="margin: 0 auto;" @click="updateAl">更新文章</el-button>
     </el-form-item>
   </el-form>
 </template>

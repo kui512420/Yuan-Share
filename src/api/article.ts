@@ -66,12 +66,14 @@ export function get(pagenow:number,pageCount:number,type:number,inputData?:strin
   })
 }
 //删除单个
-export function delOne(id:number){
+export function delOne(id:number,username:string){
+  console.log(id)
   return Request({
     url: 'api/article/delOne',
     method: 'get',
     params:{
-      id:id
+      id:id,
+      username:username
     }
   })
 }
@@ -94,14 +96,31 @@ export function findOne(id:number){
   })
 }
 //更新文章状态
-export function updateStatus(id:number,status:number){
+export function updateStatus(id:number,status:number,username:string){
 
   return Request({
     url:"api/article/updateStatus",
     method:"get",
     params:{
       id:id,
-      status:status
+      status:status,
+      username:username
+    }
+  })
+}
+//更新文章
+export function updateAll(id:number,article_title:string,article_tag:string[],article_content:string,article_type:number,authorid:number){
+
+  return Request({
+    url:"api/article/updateAll",
+    method:"post",
+    data:{
+      id:id,
+      article_title:article_title,
+      article_tag:article_tag,
+      article_content:article_content,
+      article_type:article_type,
+      authorid:authorid
     }
   })
 }
