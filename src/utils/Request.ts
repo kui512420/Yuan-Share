@@ -9,10 +9,12 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-
+  const path = router.currentRoute.value.path
   const token = window.localStorage.getItem('token')
   if(token=="" || token==null || token==undefined){
-    router.push('/management')
+    if(path!=="/" && !path.startsWith("/article")){
+      router.push('/management')
+    }
   }
   config.headers['token'] = `${token}`;
   return config;
@@ -22,7 +24,7 @@ instance.interceptors.request.use(function (config) {
 });
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
-  if(response.data.code==205 || response.data.code==207 || response.data.code==204){
+  if(response.data.code==205 || response.data.code==207 || response.data.code==204 || response.data.code==500){
     ElMessage({
       message:response.data.msg
     })

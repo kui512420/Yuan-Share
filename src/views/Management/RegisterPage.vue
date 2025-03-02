@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
-import { User, Lock, CircleCheck} from '@element-plus/icons-vue'
+import { User, Lock, CircleCheck } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { register } from '@/api/register'
@@ -11,7 +11,7 @@ const ruleFormRef = ref<FormInstance>()
 interface RuleForm {
   username: string,
   password: string,
-  nickname:string,
+  nickname: string,
   code: string
 }
 
@@ -21,7 +21,7 @@ const imgSrc = ref('api/code/captcha?t=')
 const RuleForm = reactive<RuleForm>({
   username: '',
   password: '',
-  nickname:"",
+  nickname: "",
   code: ''
 })
 
@@ -67,7 +67,7 @@ function changeImg() {
   imgSrc.value = 'api/code/captcha?t=' + timestamp
 }
 
-const toLogin = ()=>{
+const toLogin = () => {
   router.push("/management")
 }
 
@@ -75,47 +75,37 @@ const toLogin = ()=>{
 提交表单登录
 */
 
-const submitForm = async (form1: FormInstance | undefined) => {
-  if(form1){
-    await form1.validate((valid) => {
-    if (valid) {
-      const loading = ElLoading.service({
-        text: "加载中",
-        background: 'rgba(0, 0, 0, 0.7)',
-      })
-      setTimeout(() => {
-
-        register(RuleForm.username,RuleForm.password,RuleForm.nickname,RuleForm.code).then((respon) => {
-          const result = respon.data
-          loading.close()
-          if (result.msg === "注册成功") {
-            ElMessage({
-              message: respon.data.msg,
-              type: 'success',
-            })
-            //设置token
-            window.localStorage.removeItem("token")
-            window.localStorage.setItem("token",respon.data.data)
-            router.push("/management/home/index")
-          } else {
-            changeImg()
-            router.push("/management/register")
-            ElMessage({
-              message: respon.data.msg,
-              type: 'error',
-            })
-          }
-        })
-
-      }, 800)
-
-    } else {
-      ElMessage.error('缺失参数')
-    }
+const submitForm = () => {
+  const loading = ElLoading.service({
+    text: "加载中",
+    background: 'rgba(0, 0, 0, 0.7)',
   })
-  }else{
-    ElMessage.error('表单验证失败')
-  }
+  setTimeout(() => {
+
+    register(RuleForm.username, RuleForm.password, RuleForm.nickname, RuleForm.code).then((respon) => {
+      const result = respon.data
+      loading.close()
+      if (result.msg === "注册成功") {
+        ElMessage({
+          message: respon.data.msg,
+          type: 'success',
+        })
+        //设置token
+        window.localStorage.removeItem("token")
+        window.localStorage.setItem("token", respon.data.data)
+        router.push("/management/home/index")
+      } else {
+        changeImg()
+        router.push("/management/register")
+
+        ElMessage({
+          message: respon.data.msg,
+          type: 'error',
+        })
+      }
+    })
+
+  }, 800)
 
 
 }
@@ -138,20 +128,19 @@ const submitForm = async (form1: FormInstance | undefined) => {
       </el-form-item>
 
       <el-form-item prop="nickname">
-        <el-input v-model="RuleForm.nickname" style="width: 240px"  placeholder="请输入名称"
-          :prefix-icon="User" />
+        <el-input v-model="RuleForm.nickname" style="width: 240px" placeholder="请输入名称" :prefix-icon="User" />
       </el-form-item>
 
       <el-form-item prop="code">
         <div class="code-area">
           <el-input v-model="RuleForm.code" style="width: 160px" placeholder="请输入验证码" :prefix-icon="CircleCheck" />
-          <img :src="imgSrc" alt="验证码加载失败" class="codeClass"  width="50" height="30" @click="changeImg">
+          <img :src="imgSrc" alt="验证码加载失败" class="codeClass" width="50" height="30" @click="changeImg">
         </div>
 
       </el-form-item>
 
-      <el-button class="login-btn" type="primary" :plain="true" @click="submitForm(ruleFormRef)">注册</el-button>
-      <el-button  class="login-btn reg" type="primary" :plain="true" @click="toLogin">去登录</el-button>
+      <el-button class="login-btn" type="primary" :plain="true" @click="submitForm()">注册</el-button>
+      <el-button class="login-btn reg" type="primary" :plain="true" @click="toLogin">去登录</el-button>
     </el-form>
   </div>
 </template>
@@ -165,15 +154,18 @@ const submitForm = async (form1: FormInstance | undefined) => {
   background-repeat: no-repeat;
   background-size: cover;
 }
-.reg{
+
+.reg {
   margin-left: 0px;
 }
+
 .login-title {
   margin-bottom: 20px;
   /**禁止用户选择文字 */
   user-select: none;
 }
-.codeClass{
+
+.codeClass {
   border: 1px solid blue;
   margin-left: 5px;
 }

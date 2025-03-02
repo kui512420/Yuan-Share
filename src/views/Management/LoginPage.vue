@@ -125,6 +125,10 @@ const submitForm = async (form1: FormInstance | undefined) => {
 
 <template>
   <div class="wrapper">
+    <el-card style="max-width: 100%;opacity: 0.8; position: relative;">
+      <router-link to="/">去前台</router-link>
+    </el-card>
+
     <el-form ref="ruleFormRef" :model="RuleForm" :rules="cheakRules" class="login-form" label-width="auto"
       style="max-width: 600px" >
       <h2 class="login-title">登录</h2>

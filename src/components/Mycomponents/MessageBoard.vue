@@ -13,8 +13,10 @@ type msg = {
 }
 const msfObj = ref<msg[]>([])
 const addmsg = ()=>{
-  add(txt.value).then(()=>{
-    ElMessage.success("发布成功")
+  add(txt.value).then((res)=>{
+    if(res.data.code!==500){
+      ElMessage.success("发布成功")
+    }
     txt.value = ''
   })
 }
