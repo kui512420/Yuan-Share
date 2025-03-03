@@ -45,6 +45,8 @@ const router = createRouter({
         { path: 'LoginLog', name:'login_log',component: () => import('@/components/Management/LogComponents/LoginLogList.vue') },
         { path: 'SigninLog', name:'signinLog',component: () => import('@/components/Management/LogComponents/SigninLogList.vue') },
         { path: 'Message', name:'message',component: () => import('@/components/Management/MessageComponents/MessageList.vue') },
+        { path: 'Goods', name:'goods',component: () => import('@/components/Management/GoodsComponents/GoodsList.vue') },
+        { path: 'Goods/Add', name:'goodsAdd',component: () => import('@/components/Management/GoodsComponents/AddGoods.vue') },
         {
           path: '/management/setting',
           name: 'person',

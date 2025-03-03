@@ -28,6 +28,13 @@ const breadcrumbConfig: { [key: string]: { name: string; to?: { path: string } }
   '/management/home/User/UserList': [
     { name: '用户管理'},
     { name: '用户列表' , to: { path: '/management/home/User/UserList' } }
+  ],
+  '/management/home/Goods/Add': [
+    { name: '商品列表', to: { path: '/management/home/Goods' }},
+    { name: '添加商品' , to: { path: '/management/home/Goods/Add' } }
+  ],
+  '/management/home/Goods': [
+    { name: '商品列表'},
   ]
 };
 

@@ -9,6 +9,7 @@ import ToolsList from '@/components/Mycomponents/ToolsList.vue'
 const activeIndex = ref('1')
 const router = useRouter();
 const searchData = ref('')
+const signbtn = ref('签到')
 const goMe = () => {
   router.push('/management')
 }
@@ -16,12 +17,13 @@ const signInto = () => {
   signIns().then((respon) => {
     if (respon.data.code == "211") {
       ElMessage.success({
-        message: respon.data.msg
+        message: respon.data.msg[0]
       })
     } else if (respon.data.code == "210") {
       ElMessage.error({
-        message: respon.data.msg
+        message: respon.data.msg[0]
       })
+      signbtn.value =  respon.data.msg[0]
     } else {
       router.push('/management')
       ElMessage.error({
@@ -66,7 +68,7 @@ const dateInfo = computed(()=>{
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1" @click="activeIndex = '1'">首页</el-menu-item>
       <el-menu-item index="2" @click="activeIndex = '2'">留言</el-menu-item>
-      <el-menu-item index="3" @click="activeIndex = '3'">待更新</el-menu-item>
+      <el-menu-item index="3" @click="activeIndex = '3'">商城</el-menu-item>
       <el-menu-item index="4" @click="goMe">后台</el-menu-item>
       <el-input
       size="small"
@@ -86,7 +88,7 @@ const dateInfo = computed(()=>{
               <h3>{{ dateInfo }}</h3>
               <span>点亮在社区的每一天</span>
             </div>
-            <el-button type="primary" plain @click="signInto">签到</el-button>
+            <el-button type="primary" plain @click="signInto">{{signbtn}}</el-button>
           </el-card>
           <el-card>
             <div>
@@ -102,6 +104,14 @@ const dateInfo = computed(()=>{
               <a href="https://beian.miit.gov.cn">豫ICP备2024077864号</a>
             </div>
 
+          </el-card>
+          <el-card style="margin-bottom: 30px;">
+            <div>
+              <li>简单爬虫制作</li>
+              <li>定制接口开发</li>
+              <li>网页开发</li>
+              联系v：kui51242000
+            </div>
           </el-card>
         </div>
       </div>

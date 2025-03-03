@@ -69,7 +69,16 @@
         </template>
       </el-menu-item>
 
-      <el-menu-item index="6" @click="navigateTo('management/setting')">
+      <el-menu-item index="6" @click="navigateTo('management/home/Goods')">
+        <el-icon>
+          <Goods />
+        </el-icon>
+        <template #title>
+          商品管理
+        </template>
+      </el-menu-item>
+
+      <el-menu-item index="7" @click="navigateTo('management/setting')">
         <el-icon>
           <Setting />
         </el-icon>
@@ -94,6 +103,7 @@ import {
   Message,
   Document,
   House,
+  Goods
 
 } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';

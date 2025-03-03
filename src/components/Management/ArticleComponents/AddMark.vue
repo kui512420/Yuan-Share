@@ -52,7 +52,7 @@ const uploadArticle = (event: never, insertImage: InsertImageFunction, files: Fi
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url: "https://kuikui.space/"+respon.data.msg,
+      url: "kuikui.space/"+respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',
@@ -68,7 +68,7 @@ const uploadIm = (params: UploadParams) => {
   formData.append('type', params.data.type + "");
   formData.append('fileInput', file);
   uploadImg(formData).then((res) => {
-    sharedDataStore.HotCoverImgSrc = "https://kuikui.space/" + res.data.msg;
+    sharedDataStore.HotCoverImgSrc = "kuikui.space/" + res.data.msg;
     ElMessage.success({
       message: "上传头像成功"
     })

@@ -70,7 +70,7 @@ const uploadArticle = (event: never, insertImage: InsertImageFunction, files: Fi
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url: "https://kuikui.space/" + respon.data.msg,
+      url: "https:///" + respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',
@@ -86,7 +86,7 @@ const uploadIm = (params: UploadParams) => {
   formData.append('type', params.data.type + "");
   formData.append('fileInput', file);
   uploadImg(formData).then((res) => {
-    sharedDataStore.HotCoverImgSrc = "https://kuikui.space/" + res.data.msg;
+    sharedDataStore.HotCoverImgSrc = "kuikui.space/" + res.data.msg;
     ElMessage.success({
       message: "上传头像成功"
     })
@@ -132,7 +132,7 @@ const updateAl = () => {
 </script>
 
 <template>
-  <el-form>
+  <el-form>kuikui.space
     <el-form-item label="文章标题">
       <el-input v-model="title" />
     </el-form-item>
