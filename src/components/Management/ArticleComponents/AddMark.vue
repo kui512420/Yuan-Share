@@ -68,7 +68,7 @@ const uploadIm = (params: UploadParams) => {
   formData.append('type', params.data.type + "");
   formData.append('fileInput', file);
   uploadImg(formData).then((res) => {
-    sharedDataStore.HotCoverImgSrc = "kuikui.space/" + res.data.msg;
+    sharedDataStore.HotCoverImgSrc = res.data.msg;
     ElMessage.success({
       message: "上传头像成功"
     })
