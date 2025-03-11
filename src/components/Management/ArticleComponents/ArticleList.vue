@@ -78,6 +78,14 @@
       </template>
     </el-table-column>
 
+    <el-table-column property="top" label="置顶">
+      <template #default="scope">
+        <el-tag :type="scope.row.top === 1 ? 'primary' : 'danger'">
+          {{ scope.row.top === 1 ? '是' : '否' }}
+        </el-tag>
+      </template>
+    </el-table-column>
+
     <el-table-column property="last_time" label="修改时间" width="70">
       <template #default="scope">
         {{ convertDate(scope.row.last_time) }}
@@ -105,6 +113,8 @@
             <el-dropdown-menu>
               <el-dropdown-item @click="updateSt(scope.row.article_id,1,scope.row.article_author)">上架</el-dropdown-item>
               <el-dropdown-item @click="updateSt(scope.row.article_id,0,scope.row.article_author)">下架</el-dropdown-item>
+              <el-dropdown-item @click="updateTop(scope.row.article_id,1,scope.row.top)">置顶</el-dropdown-item>
+              <el-dropdown-item @click="updateTop(scope.row.article_id,0,scope.row.top)">取消置顶</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -127,7 +137,7 @@
 import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import { ArrowDown ,View} from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { get, delOne, delArr,updateStatus} from '@/api/article'
+import { get, delOne, delArr,updateStatus,updateTopApi} from '@/api/article'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
 import router from '@/router'
@@ -307,16 +317,23 @@ const reset = () => {
 }
 //更改状态
 const updateSt = (id:number,status:number,username:string)=>{
-
   updateStatus(id,status,username).then((respon)=>{
     if(respon.data.code!==206){
       ElMessage.success(respon.data.msg)
       refreshList()
     }
   })
-
 }
 
+//更改置顶
+const updateTop = (id:number,top:number,username:string)=>{
+  updateTopApi(id,top,username).then((respon)=>{
+    if(respon.data.code!==206){
+      ElMessage.success(respon.data.msg)
+      refreshList()
+    }
+  })
+}
 </script>
 
 <style scoped>

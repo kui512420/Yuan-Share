@@ -60,14 +60,14 @@
         </template>
       </el-menu-item>
 
-      <el-menu-item index="5">
+      <!-- <el-menu-item index="5">
         <el-icon>
           <Bell />
         </el-icon>
         <template #title>
           公告管理
         </template>
-      </el-menu-item>
+      </el-menu-item> -->
 
       <el-menu-item index="6" @click="navigateTo('management/home/Goods')">
         <el-icon>
@@ -83,7 +83,7 @@
           <Setting />
         </el-icon>
         <template #title>
-          设置
+          个人信息
         </template>
       </el-menu-item>
 
@@ -97,7 +97,6 @@
 import { computed } from 'vue'
 import {
   Setting,
-  Bell,
   User,
   Memo,
   Message,

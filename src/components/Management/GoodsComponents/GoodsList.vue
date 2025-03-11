@@ -15,7 +15,6 @@
       </el-input>
     </div>
 
-    <el-button type="danger" @click="delMore(selectionarr)">批量删除</el-button>
     <el-button type="info" @click="reset">重置</el-button>
     <el-button type="success" @click="goAdd">添加商品</el-button>
   </div>
@@ -65,9 +64,7 @@
     </el-table-column>
     <el-table-column property="option" label="操作" width="250">
       <template #default="scope">
-        <el-button type="info" :icon="Edit" circle @click="goEdit(scope.row.article_id)"/>
         <el-button type="danger" :icon="Delete" circle @click="del(scope.row.goods_id)" />
-
         <el-dropdown style="margin-left: 5px;">
           <el-button size="small">
             更多<el-icon class="el-icon--right">
@@ -97,14 +94,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ElTable, ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { ElTable, ElMessage, ElMessageBox} from 'element-plus'
 import { ArrowDown} from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import {getGoodsAll,UpdateStatus,delByID} from '@/api/goods.ts'
-import { Search, Edit, Delete } from '@element-plus/icons-vue'
+import { Search,  Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
 import router from '@/router'
-import  {useShareStore} from '@/stores/counter'
 const tableData = ref([])
 const total = ref(0)
 const currentPage1 = ref(1)
@@ -115,7 +111,6 @@ const select = ref('')
 
 const disabled = ref(false)
 const selectionarr = ref<number[]>([])
-const useShare = useShareStore()
 interface editFormDatain {
   article_id: number
 }
@@ -123,10 +118,7 @@ interface editFormDatain {
 const goAdd= ()=>{
   router.push("/management/home/Goods/Add")
 }
-const goEdit= (id:number)=>{
-  router.push("/management/home/Article/Edit")
-  useShare.setArticle_id(id)
-}
+
 
 
 //刷新列表
@@ -181,51 +173,7 @@ const del = (id: number) => {
     })
 }
 
-//删除多个用户
-const delMore = (idArr: Array<number>) => {
 
-  if (idArr.length == 0) {
-    ElNotification({
-      title: '警告',
-      message: '请选择后在尝试',
-      type: 'warning',
-      duration: 1000
-    })
-  } else {
-    ElMessageBox.confirm(
-      '确认删除？',
-      '提示',
-      {
-        confirmButtonText: '删除',
-        cancelButtonText: '取消',
-        type: 'warning',
-        draggable: true
-      }
-    )
-      .then(() => {
-        /*
-        const data = idArr.toString().replace("[", "").replace("]", "")
-
-        delArr(data).then((respon) => {
-          if (respon.data.data >= 1 && respon.data.data <100000) {
-            ElMessage({
-              type: 'success',
-              message: '删除了' + respon.data.data + "条数据",
-            })
-            selectionarr.value = []
-            refreshList()
-          }
-        })
-          */
-      })
-      .catch(() => {
-        ElMessage({
-          type: 'info',
-          message: '取消删除',
-        })
-      })
-  }
-}
 
 
 //获取所选项

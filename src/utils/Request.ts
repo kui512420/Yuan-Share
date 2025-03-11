@@ -4,7 +4,7 @@ import { ElMessage } from 'element-plus';
 // 创建实例时配置默认值
 const instance = axios.create({
   baseURL: '/',
-  timeout:5000 //默认超时5s
+  timeout:50000 //默认超时5s
 });
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
@@ -25,9 +25,11 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
   if(response.data.code==205 || response.data.code==207 || response.data.code==204 || response.data.code==500){
-    ElMessage({
-      message:response.data.msg
-    })
+    if(localStorage.getItem("token")){
+      ElMessage({
+        message:response.data.msg
+      })
+    }
     router.push('/management')
     window.localStorage.removeItem('token')
   }

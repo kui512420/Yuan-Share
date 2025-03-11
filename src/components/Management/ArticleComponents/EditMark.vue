@@ -70,7 +70,7 @@ const uploadArticle = (event: never, insertImage: InsertImageFunction, files: Fi
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url: "https:///" + respon.data.msg,
+      url: "https://kuikui.sapce/" + respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',

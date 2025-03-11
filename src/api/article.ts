@@ -108,6 +108,19 @@ export function updateStatus(id:number,status:number,username:string){
     }
   })
 }
+//更新文章置顶
+export function updateTopApi(id:number,top:number,username:string){
+
+  return Request({
+    url:"api/article/updateTop",
+    method:"get",
+    params:{
+      id:id,
+      top:top,
+      username:username
+    }
+  })
+}
 //更新文章
 export function updateAll(id:number,article_title:string,article_tag:string[],article_content:string,article_type:number,authorid:number){
 
@@ -159,5 +172,22 @@ export function like(pagenow:number,pageCount:number,txt:string){
       pageCount:pageCount,
       txt:txt
     }
+  })
+}
+
+//查询置顶
+export function getTop(){
+
+  return Request({
+    url:"api/article/getTop",
+    method:"get"
+  })
+}
+//查询图表数据
+export function getECharts(){
+
+  return Request({
+    url:"api/article/getEcharts",
+    method:"get"
   })
 }

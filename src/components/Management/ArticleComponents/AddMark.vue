@@ -52,7 +52,7 @@ const uploadArticle = (event: never, insertImage: InsertImageFunction, files: Fi
   formData.append('fileInput', files[0]);
   uploadImg(formData).then((respon) => {
     insertImage({
-      url: "kuikui.space/"+respon.data.msg,
+      url: "https://kuikui.space/"+respon.data.msg,
       desc: '图片',
       width: 'auto',
       height: 'auto',
