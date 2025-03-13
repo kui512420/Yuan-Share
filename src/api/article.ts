@@ -191,3 +191,46 @@ export function getECharts(){
     method:"get"
   })
 }
+//导出
+export function exportArticleList() {
+  return Request({
+    url: 'api/article/export',
+    method: 'post',
+    responseType: 'blob' // 设置响应类型为 blob
+  })
+}
+// 点赞文章
+export function likeArticle(article_id: number) {
+  return Request({
+    url: `api/article/likes`,
+    method: 'post',
+    data: {
+      article_id: article_id
+    }
+  });
+}
+
+
+// 获取文章的点赞数
+export function getArticleLikeCount(article_id: number) {
+  return Request({
+    url: `api/article/${article_id}/like/count`,
+    method: 'get'
+  });
+}
+
+// 获取文章的点赞用户列表
+export function getArticleLikeUsers(article_id: number) {
+  return Request({
+    url: `api/article/${article_id}/like/users`,
+    method: 'get'
+  });
+}
+
+// 判断用户是否点赞了文章
+export function hasUserLikedArticle(article_id: number) {
+  return Request({
+    url: `api/article/${article_id}/like`,
+    method: 'get'
+  });
+}

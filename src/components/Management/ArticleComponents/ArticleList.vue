@@ -19,7 +19,7 @@
         </template>
       </el-input>
     </div>
-
+    <ExportButton fileName="文章.xls"></ExportButton>
     <el-button type="danger" @click="delMore(selectionarr)">批量删除</el-button>
     <el-button type="info" @click="reset">重置</el-button>
     <el-button type="success" @click="goAdd">添加文章</el-button>
@@ -142,6 +142,7 @@ import { Search, Edit, Delete } from '@element-plus/icons-vue'
 import { convertDate } from '@/utils/DateUntil'
 import router from '@/router'
 import  {useShareStore} from '@/stores/counter'
+import ExportButton from '@/components/Mycomponents/ExportButton.vue'
 const tableData = ref([])
 const total = ref(0)
 const currentPage1 = ref(1)

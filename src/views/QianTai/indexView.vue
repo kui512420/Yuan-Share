@@ -142,7 +142,7 @@ const PushTime = (time: string) => {
           <el-card style="margin-bottom: 30px;">
             <div>
               <h3>{{ dateInfo }}</h3>
-              <span>点亮在社区的每一天</span>
+              <span>热爱不是天赋的赠品，是凌晨四点琴房里，手指磨破仍按不准的和弦。</span>
             </div>
             <el-button type="primary" plain @click="signInto">{{ signbtn }}</el-button>
           </el-card>

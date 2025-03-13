@@ -10,7 +10,6 @@
           <House />
         </el-icon>
         <template #title>
-
           <span>首页</span>
         </template>
       </el-menu-item>
@@ -78,7 +77,7 @@
         </template>
       </el-menu-item>
 
-      <el-menu-item index="7" @click="navigateTo('management/setting')">
+      <el-menu-item index="8" @click="navigateTo('management/setting')">
         <el-icon>
           <Setting />
         </el-icon>

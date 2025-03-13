@@ -48,7 +48,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
-import { useScroll } from '@vueuse/core'
 import { getModelsList,chat} from '@/api/ai'
 import MarkdownIt from 'markdown-it';
 const md = new MarkdownIt();
@@ -88,7 +87,6 @@ const messagesContainer = ref<HTMLElement | null>(null)
 const availableModels = ref<Model[]>([])
 const selectedModel = ref('')
 
-const { y } = useScroll(messagesContainer)
 
 const position = ref({ x: 1100, y: 200 }) // 初始位置
 let isDragging = false
@@ -155,7 +153,7 @@ const sendMessage = async () => {
       content: res.data.message.content
     });
     scrollToBottom();
-  }).catch((error) => {
+  }).catch(() => {
     alert('网络异常，请稍后重试');
     inputMessage.value = userMessage;
   });

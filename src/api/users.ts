@@ -152,3 +152,11 @@ export function signIns() {
     method: 'get'
   })
 }
+//导出
+export function exportlist() {
+  return Request({
+    url: 'api/users/export',
+    method: 'post',
+    responseType: 'blob' // 设置响应类型为 blob
+  })
+}

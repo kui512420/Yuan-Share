@@ -194,8 +194,10 @@ const reset = () => {
 const updateSt = (id:number,status:number)=>{
 
   UpdateStatus(id,status).then((respon)=>{
-    ElMessage.success(respon.data.msg)
-    refreshList()
+    if(!(respon.data.code==206)){
+      ElMessage.success(respon.data.msg)
+      refreshList()
+    }
   })
 
 }

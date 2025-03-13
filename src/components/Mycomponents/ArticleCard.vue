@@ -1,41 +1,54 @@
 <script setup lang="ts">
-import { ref,defineProps, watch} from 'vue'
-import { get,like } from '@/api/article'
+import { ref, defineProps, watch } from 'vue'
+import { get, like, likeArticle, unlikeArticle } from '@/api/article'
 import { convertDate } from '@/utils/DateUntil'
 type dataform = {
-  article_id:string,
-  article_title:string,
-  article_author:string,
-  publish_time:string,
-  article_tag:string,
-  article_cover:string
+  article_id: string,
+  article_title: string,
+  article_author: string,
+  publish_time: string,
+  article_tag: string,
+  article_cover: string,
+  like_count: number,
+  is_liked: boolean
 }
-const data = ref <dataform[]>([])
+const data = ref<dataform[]>([])
 const total = ref(0)
 const currentPage1 = ref(1)
 const pageSize1 = ref(5)
 
 const refreshList = () => {
-  get(currentPage1.value, pageSize1.value, 0,"",5,11).then((respon) => {
+  get(currentPage1.value, pageSize1.value, 0, "", 5, 11).then((respon) => {
     data.value = respon.data.data.list
     total.value = respon.data.data.total
   })
 }
 //分页回调
 const handleSizeChange = () => {
-  if(props.searchData){
+  if (props.searchData) {
     doSomething(props.searchData)
-  }else{
+  } else {
     refreshList()
   }
 }
 const handleCurrentChange = () => {
-  if(props.searchData){
+  if (props.searchData) {
     doSomething(props.searchData)
-  }else{
+  } else {
     refreshList()
   }
 }
+
+const handleLike = (item: dataform) => {
+  likeArticle(parseInt(item.article_id)).then((res) => {
+      if (res.data.msg == "取消点赞成功") {
+        item.like_count -= 1;
+      }else{
+        item.like_count += 1;
+      }
+    });
+  item.is_liked = !item.is_liked;
+};
 const PushTime = (time: string) => {
   // 将传入的时间字符串转换为 Date 对象
   const inputTime = new Date(time).getTime();
@@ -94,7 +107,7 @@ const props = defineProps({
 });
 
 // 定义一个函数，当接收到的值变化时执行
-const doSomething = (txt:string) => {
+const doSomething = (txt: string) => {
   likes(txt)
   // 这里可以添加更多的逻辑
 };
@@ -103,16 +116,18 @@ const doSomething = (txt:string) => {
 watch(() => props.searchData, (newValue) => {
   if (newValue) {
     doSomething(newValue);
-  }else{
+  } else {
     refreshList()
   }
 });
-const likes = (txt:string)=>{
+//模糊查询
+const likes = (txt: string) => {
   like(currentPage1.value, pageSize1.value, txt).then((respon) => {
     data.value = respon.data.data.list
     total.value = respon.data.data.total
   })
 }
+
 refreshList()
 </script>
 
@@ -130,22 +145,24 @@ refreshList()
           </span>
           <span v-for="(item2, index2) in JSON.parse(item.article_tag)" :key="index2">
             <el-tag type="info">{{ item2 }}</el-tag>
+            <el-tag :style="{
+      backgroundColor: item.is_liked ? '#f56c6c' : '#909399',
+      color: item.is_liked ? 'white' : 'white',
+      cursor: 'pointer',
+      marginLeft: '5px'
+    }" @click="handleLike(item)">
+              ♥ {{ item.like_count }}
+            </el-tag>
           </span>
+
         </div>
       </div>
       <img class="isShowImg" style="padding: 5px;" :src=item.article_cover alt="" width="80px" height="80">
     </div>
     <div class="demo-pagination-block" style="display: flex; justify-content: center; margin-top: 10px;">
-      <el-pagination
-      size="small"
-      v-model:current-page="currentPage1"
-      v-model:page-size="pageSize1"
-      :background="true"
-      layout="prev, pager, next"
-      v-model:total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+      <el-pagination size="small" v-model:current-page="currentPage1" v-model:page-size="pageSize1" :background="true"
+        layout="prev, pager, next" v-model:total="total" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" />
     </div>
   </div>
 </template>
@@ -154,8 +171,9 @@ refreshList()
 a {
   text-decoration: none;
 }
-.isShowTime{
-  margin:0 10px;
+
+.isShowTime {
+  margin: 0 10px;
 }
 
 @media screen and (max-width: 600px) {

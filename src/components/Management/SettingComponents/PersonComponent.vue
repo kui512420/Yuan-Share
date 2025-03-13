@@ -16,6 +16,7 @@ const editStatus = ref(true)
 const editFormData = reactive({
   id: "",
   username: "",
+  email:"",
   nickname: "",
   password: "",
   headsrc: "",
@@ -73,6 +74,7 @@ const edit = (id: number) => {
     const data = respon.data.data
     editFormData.id = data.id
     editFormData.username = data.username
+    editFormData.email = data.email
     editFormData.nickname = data.nickname
     editFormData.password = data.password
     editFormData.headsrc = data.headsrc
@@ -127,6 +129,9 @@ const updateInfos = () => {
       </el-form-item>
       <el-form-item label="用户账号">
         <el-input v-model="editFormData.username" disabled />
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="editFormData.email" disabled/>
       </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="editFormData.nickname" />

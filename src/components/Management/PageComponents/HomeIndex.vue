@@ -5,7 +5,7 @@ import { getCount } from '@/api/home'
 import { getECharts } from '@/api/article'
 import * as echarts from 'echarts';
 const user = ref(0)
-const notice = ref(0)
+const info = ref(0)
 const article = ref(0)
 const goods = ref(0)
 // 定义 ECharts 选项类型
@@ -73,19 +73,19 @@ onMounted(async () => {
 const userValue = useTransition(user, {
   duration: 1000,
 })
-const noticeValue = useTransition(notice, {
+const infoValue = useTransition(info, {
   duration: 1000,
 })
 const articleValue = useTransition(article, {
   duration: 1000,
 })
-const infoValue = useTransition(goods, {
+const goodsValue  = useTransition(goods, {
   duration: 1000,
 })
 
 getCount().then((respon) => {
   user.value = respon.data.data.user;
-  notice.value = respon.data.data.notice;
+  info.value = respon.data.data.info;
   article.value = respon.data.data.article;
   goods.value = respon.data.data.goods;
 }).catch((err) => {
@@ -128,7 +128,7 @@ getCount().then((respon) => {
         <template #header>
           <h2 style="text-align: center;">商品数</h2>
         </template>
-        <el-statistic style="text-align: center;" :value="noticeValue" />
+        <el-statistic style="text-align: center;" :value="goodsValue" />
       </el-card>
     </div>
   </div>

@@ -1,26 +1,27 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
-import { User, Lock, CircleCheck } from '@element-plus/icons-vue'
+import { User, Lock, CircleCheck,Message } from '@element-plus/icons-vue'
 import { ElMessage, ElLoading } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { register } from '@/api/register'
 import router from '@/router/index'
+import SendButton from '@/components/Mycomponents/SendButton.vue'
 //方便获取到表单实例
 const ruleFormRef = ref<FormInstance>()
 //定义了一个表单接口规范
 interface RuleForm {
   username: string,
   password: string,
+  email: string
   nickname: string,
   code: string
 }
 
 
-
-const imgSrc = ref('api/code/captcha?t=')
 const RuleForm = reactive<RuleForm>({
   username: '',
   password: '',
+  email:'',
   nickname: "",
   code: ''
 })
@@ -38,6 +39,13 @@ const cheakRules = reactive<FormRules<RuleForm>>(
       {
         required: true,
         message: '请输入密码',
+        trigger: 'change'
+      }
+    ],
+    email: [
+      {
+        required: true,
+        message: '请输入邮箱',
         trigger: 'change'
       }
     ],
@@ -59,13 +67,6 @@ const cheakRules = reactive<FormRules<RuleForm>>(
 )
 
 //******************************************方法*********************************************
-/*
-切换验证码图片
-*/
-function changeImg() {
-  const timestamp = new Date().getTime();
-  imgSrc.value = 'api/code/captcha?t=' + timestamp
-}
 
 const toLogin = () => {
   router.push("/management")
@@ -75,37 +76,48 @@ const toLogin = () => {
 提交表单登录
 */
 
-const submitForm = () => {
-  const loading = ElLoading.service({
-    text: "加载中",
-    background: 'rgba(0, 0, 0, 0.7)',
-  })
-  setTimeout(() => {
-
-    register(RuleForm.username, RuleForm.password, RuleForm.nickname, RuleForm.code).then((respon) => {
-      const result = respon.data
-      loading.close()
-      if (result.msg === "注册成功") {
-        ElMessage({
-          message: respon.data.msg,
-          type: 'success',
+const submitForm = async (form1: FormInstance | undefined) => {
+  if (form1) {
+    await form1.validate((valid) => {
+      if (valid) {
+        const loading = ElLoading.service({
+          text: "加载中",
+          background: 'rgba(0, 0, 0, 0.7)',
         })
-        //设置token
-        window.localStorage.removeItem("token")
-        window.localStorage.setItem("token", respon.data.data)
-        router.push("/management/home/index")
-      } else {
-        changeImg()
-        router.push("/management/register")
+        setTimeout(() => {
 
-        ElMessage({
-          message: respon.data.msg,
-          type: 'error',
-        })
+          register(RuleForm.username, RuleForm.password,RuleForm.email, RuleForm.nickname, RuleForm.code).then((respon) => {
+            const result = respon.data
+            loading.close()
+            if (result.msg === "注册成功") {
+              ElMessage({
+                message: respon.data.msg,
+                type: 'success',
+              })
+              //设置token
+              window.localStorage.removeItem("token")
+              window.localStorage.setItem("token", respon.data.data)
+              router.push("/management/home/index")
+            } else {
+              router.push("/management/register")
+
+              ElMessage({
+                message: respon.data.msg,
+                type: 'error',
+              })
+            }
+          })
+
+        }, 800)
+
+      }else {
+        ElMessage.error('缺失参数')
       }
-    })
-
-  }, 800)
+    }
+    )
+  }else{
+    ElMessage.error('表单验证失败')
+  }
 
 
 }
@@ -130,16 +142,17 @@ const submitForm = () => {
       <el-form-item prop="nickname">
         <el-input v-model="RuleForm.nickname" style="width: 240px" placeholder="请输入名称" :prefix-icon="User" />
       </el-form-item>
-
+      <el-form-item prop="nickname">
+        <el-input v-model="RuleForm.email" style="width: 160px" placeholder="请输入邮箱" :prefix-icon="Message" />
+        <SendButton :to="RuleForm.email"></SendButton>
+      </el-form-item>
       <el-form-item prop="code">
         <div class="code-area">
           <el-input v-model="RuleForm.code" style="width: 160px" placeholder="请输入验证码" :prefix-icon="CircleCheck" />
-          <img :src="imgSrc" alt="验证码加载失败" class="codeClass" width="50" height="30" @click="changeImg">
         </div>
-
       </el-form-item>
 
-      <el-button class="login-btn" type="primary" :plain="true" @click="submitForm()">注册</el-button>
+      <el-button class="login-btn" type="primary" :plain="true" @click="submitForm(ruleFormRef)">注册</el-button>
       <el-button class="login-btn reg" type="primary" :plain="true" @click="toLogin">去登录</el-button>
     </el-form>
   </div>

@@ -11,10 +11,10 @@ instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   const path = router.currentRoute.value.path
   const token = window.localStorage.getItem('token')
-  if(token=="" || token==null || token==undefined){
+  if(  token==null || token==undefined){/*
     if(path!=="/" && !path.startsWith("/article")){
       router.push('/management')
-    }
+    }*/
   }
   config.headers['token'] = `${token}`;
   return config;

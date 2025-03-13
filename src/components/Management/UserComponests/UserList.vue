@@ -17,7 +17,7 @@
         </template>
       </el-input>
     </div>
-
+    <ExportButton fileName="用户.xls"></ExportButton>
     <el-button type="danger" @click="delMore(selectionarr)">批量删除</el-button>
     <el-button type="info" @click="reset">重置</el-button>
   </div>
@@ -34,6 +34,7 @@
     </el-table-column>
     <el-table-column property="id" label="用户ID" width="76" />
     <el-table-column property="username" label="账号" />
+    <el-table-column property="email" label="邮箱" />
     <el-table-column property="nickname" label="名称" />
     <el-table-column property="headsrc" label="用户头像" width="123">
       <template #default="scope">
@@ -103,6 +104,9 @@
       <el-form-item label="用户账号">
         <el-input v-model="editFormData.username" disabled />
       </el-form-item>
+      <el-form-item label="用户邮箱">
+        <el-input v-model="editFormData.email" disabled />
+      </el-form-item>
       <el-form-item label="名称">
         <el-input v-model="editFormData.nickname" />
       </el-form-item>
@@ -164,8 +168,8 @@ import type { DrawerProps, UploadProps } from 'element-plus'
 import { isNumber } from 'element-plus/es/utils/types.mjs'
 import { uploadImg } from '@/api/home'
 import { convertDate } from '@/utils/DateUntil'
+import ExportButton from '@/components/Mycomponents/ExportButton.vue'
 // 定义用户信息接口
-
 const tableData = ref([])
 const total = ref(0)
 const currentPage1 = ref(1)
@@ -188,6 +192,7 @@ const editFormData = reactive({
   password: "",
   headsrc: "",
   status: "",
+  email: "",
   type: "",
   register_time: "",
   last_login: "",
@@ -209,6 +214,7 @@ interface editFormDatain {
   nickname:string
   headsrc: string,
   status: number,
+  email:string,
   type: number,
   register_time: string,
   last_login: string,
@@ -346,6 +352,7 @@ const edit = (id: number) => {
     editFormData.nickname = data.nickname
     editFormData.password = data.password
     editFormData.headsrc = data.headsrc
+    editFormData.email = data.email
     editFormData.status = data.status
     editFormData.register_time = data.register_time
     editFormData.last_login = data.last_login
@@ -463,6 +470,7 @@ const upStatus = (id: number, username: string, status: number) => {
 }
 //刷新列表-类型
 const refreshListByT = (newValue: string) => {
+
   if (newValue == "全部用户") {
     refreshList()
   } else if (newValue == "普通用户") {
