@@ -12,11 +12,13 @@ const { to,RemainingTime } = defineProps({
     default: 60000
   }
 })
-const sendCode = (event) => {
-  event.stopPropagation();
+type sendr = {
+  isSend:boolean
+}
+const sendCode = () => {
   isDisabled.value = true
   isLoading.value = true
-  send(to).then((res) => {
+  send(to as string).then((res) => {
     if (res.data.isSend) {
       isLoading.value = false
       let time = RemainingTime

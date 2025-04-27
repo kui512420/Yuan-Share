@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, watch } from 'vue'
-import { get, like, likeArticle, unlikeArticle } from '@/api/article'
+import { get, like, likeArticle} from '@/api/article'
 import { convertDate } from '@/utils/DateUntil'
 type dataform = {
   article_id: string,
@@ -145,7 +145,9 @@ refreshList()
           </span>
           <span v-for="(item2, index2) in JSON.parse(item.article_tag)" :key="index2">
             <el-tag type="info">{{ item2 }}</el-tag>
-            <el-tag :style="{
+
+          </span>
+          <el-tag :style="{
       backgroundColor: item.is_liked ? '#f56c6c' : '#909399',
       color: item.is_liked ? 'white' : 'white',
       cursor: 'pointer',
@@ -153,8 +155,6 @@ refreshList()
     }" @click="handleLike(item)">
               ♥ {{ item.like_count }}
             </el-tag>
-          </span>
-
         </div>
       </div>
       <img class="isShowImg" style="padding: 5px;" :src=item.article_cover alt="" width="80px" height="80">

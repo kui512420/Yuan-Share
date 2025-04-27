@@ -6,7 +6,6 @@
   <div style="height: 80vh;">
     <router-view ></router-view>
   </div>
-
 </template>
 
 

@@ -126,7 +126,7 @@ const PushTime = (time: string) => {
   <div>
     <ChatWindow></ChatWindow>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
-      <el-menu-item index="1" @click="activeIndex = '1'">首页</el-menu-item>
+      <el-menu-item index="1" @click="activeIndex= '1'">首页</el-menu-item>
       <el-menu-item index="2" @click="activeIndex = '2'">留言</el-menu-item>
       <el-menu-item index="3" @click="activeIndex = '3'">商城</el-menu-item>
       <el-menu-item index="4" @click="goMe">后台</el-menu-item>
@@ -156,9 +156,7 @@ const PushTime = (time: string) => {
             <div>
               本站已经运行：{{ datato() }} 天
             </div>
-            <div>
-              <a href="https://beian.miit.gov.cn">豫ICP备2024077864号</a>
-            </div>
+
 
           </el-card>
           <el-card style="margin-bottom: 30px; margin-top: 10px;">
@@ -185,20 +183,42 @@ const PushTime = (time: string) => {
         </div>
       </div>
     </el-main>
+    <el-footer style="text-align: center;">
+      <div>
+              <a href="https://beian.miit.gov.cn">豫ICP备2024077864号</a>
+            </div>
+    </el-footer>
   </div>
 
 </template>
 
 <style scoped>
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  padding: 20px;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
 .main-content {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .main-right {
   flex-grow: 1;
-  padding: 20px;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .demo-pagination-block {
@@ -210,6 +230,9 @@ const PushTime = (time: string) => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    background: #f5f7fa;
   }
 
   .isShowTime {
@@ -219,5 +242,44 @@ const PushTime = (time: string) => {
   .isShowImg {
     display: none;
   }
+}
+
+.el-menu {
+  background-color: #409EFF;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.el-menu-item {
+  color: #ffffff;
+}
+
+.el-menu-item.is-active {
+  color: #ffffff;
+  background-color: #66b1ff;
+}
+
+.el-menu-item:hover {
+  background-color: #66b1ff;
+}
+
+.el-card {
+  background-color: #ffffff;
+  border-color: #ebeef5;
+  transition: box-shadow 0.3s ease;
+}
+
+.el-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.el-button {
+  color: #ffffff;
+  background-color: #409EFF;
+  border-color: #409EFF;
+}
+
+.el-button:hover {
+  background-color: #66b1ff;
+  border-color: #66b1ff;
 }
 </style>
