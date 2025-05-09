@@ -142,7 +142,7 @@ const PushTime = (time: string) => {
           <el-card style="margin-bottom: 30px;">
             <div>
               <h3>{{ dateInfo }}</h3>
-              <span>热爱不是天赋的赠品，是凌晨四点琴房里，手指磨破仍按不准的和弦。</span>
+              <span>热爱，让我们一同去追寻吧</span>
             </div>
             <el-button type="primary" plain @click="signInto">{{ signbtn }}</el-button>
           </el-card>
@@ -193,46 +193,212 @@ const PushTime = (time: string) => {
 </template>
 
 <style scoped>
-body {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+:deep(body) {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial, sans-serif;
+  background: #f0f2f5;
+  /* 更柔和的背景色 */
   min-height: 100vh;
-  padding: 20px;
-  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.el-menu-demo {
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  /* 更精致的阴影 */
+  background-color: #ffffff;
+  /* 菜单背景改为白色，更清爽 */
+}
+
+.el-menu-item {
+  font-size: 16px;
+  color: #303133;
+  /* 深色文字，对比更清晰 */
+}
+
+.el-menu-item:hover,
+.el-menu-item.is-active {
+  color: #409eff;
+  /* 主题色高亮 */
+  background-color: #ecf5ff;
+  /* 浅蓝色背景 */
+}
+
+.el-input {
+  margin-left: auto;
+  /* 将搜索框推到最右边 */
+  margin-right: 20px;
+  /* 右边距 */
 }
 
 .main-content {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 30px;
-  max-width: 1200px;
+  gap: 20px;
+  max-width: 1300px;
+  /* 稍微加宽 */
   margin: 0 auto;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.content-left {
+  flex: 3;
+  /* 左侧内容区域占比更大 */
+  min-width: 0; /* 防止被压缩 */
 }
 
 .main-right {
-  flex-grow: 1;
-  padding: 25px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 300px; /* 右侧栏最小宽度 */
 }
 
-.demo-pagination-block {
-  margin-top: 10px;
+.el-card {
+  border-radius: 8px;
+  border: 1px solid #e4e7ed;
+  /* 更细致的边框 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  /* 统一卡片间距 */
+}
+
+.el-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.el-card h1,
+.el-card h3 {
+  color: #303133;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.el-card span,
+.el-card a {
+  color: #606266;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.el-card a {
+  color: #409eff;
+  text-decoration: none;
+}
+
+.el-card a:hover {
+  text-decoration: underline;
+}
+
+.el-button {
+  margin-top: 15px;
+  /* 按钮与上方内容间距 */
+}
+
+.article-item {
+  display: flex;
+  border-bottom: 1px solid #f0f2f5;
+  /* 更浅的分割线 */
+  justify-content: space-between;
+  padding: 15px 0;
+  align-items: center;
+}
+
+.article-item:last-child {
+  border-bottom: none;
+}
+
+.article-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
+.article-title a {
+  font-size: 18px;
+  font-weight: 500;
+  color: #303133;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  /* 确保 ellipsis 生效 */
+  max-width: 90%; /* 避免标题过长 */
+}
+
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #909399;
+  margin-top: 8px;
+}
+
+.article-meta .el-tag {
+  margin-left: 8px;
+}
+
+.article-cover {
+  padding: 5px;
+  border-radius: 4px;
+  object-fit: cover;
+  /* 保持图片比例 */
+}
+
+.el-footer {
+  text-align: center;
+  padding: 20px 0;
+  color: #909399;
+  font-size: 14px;
+  border-top: 1px solid #e4e7ed;
+  margin-top: 30px;
+}
+
+.el-footer a {
+  color: #409eff;
+  text-decoration: none;
+}
+
+.el-footer a:hover {
+  text-decoration: underline;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 992px) { /* 中等屏幕 */
+  .main-content {
+    flex-direction: column;
+  }
+  .main-right {
+    min-width: auto; /* 移除最小宽度限制 */
+  }
 }
 
 @media screen and (max-width: 600px) {
   .main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 10px;
-    background: #f5f7fa;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .el-menu-demo {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .el-input {
+    width: 180px !important; /* 确保样式生效 */
+  }
+
+  .article-title a {
+    font-size: 16px;
   }
 
   .isShowTime {
@@ -242,44 +408,5 @@ body {
   .isShowImg {
     display: none;
   }
-}
-
-.el-menu {
-  background-color: #409EFF;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.el-menu-item {
-  color: #ffffff;
-}
-
-.el-menu-item.is-active {
-  color: #ffffff;
-  background-color: #66b1ff;
-}
-
-.el-menu-item:hover {
-  background-color: #66b1ff;
-}
-
-.el-card {
-  background-color: #ffffff;
-  border-color: #ebeef5;
-  transition: box-shadow 0.3s ease;
-}
-
-.el-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.el-button {
-  color: #ffffff;
-  background-color: #409EFF;
-  border-color: #409EFF;
-}
-
-.el-button:hover {
-  background-color: #66b1ff;
-  border-color: #66b1ff;
 }
 </style>
