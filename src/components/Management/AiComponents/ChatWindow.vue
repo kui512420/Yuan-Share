@@ -200,6 +200,7 @@ const isCode = (content: string) => {
   height: 400px;
   background: white;
   border-radius: 8px;
+  z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: height 0.3s ease;

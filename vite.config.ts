@@ -23,7 +23,7 @@ export default defineConfig({
   server: {
     //配置端口
     host: '127.0.0.1', //本机地址
-    port:5000,  //通过5000端口号访问
+    port:80,  //通过5000端口号访问
 
     //配置反向代理
     proxy: {
