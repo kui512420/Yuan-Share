@@ -9,13 +9,24 @@ export function add(info:string){
     }
   })
 }
-//获取留言
-export function get(){
+
+/**
+ * 获取聊天消息
+ * @param pageSize 每页消息数量，默认10
+ * @param pageNum 页码，默认1
+ * @returns 消息列表
+ */
+export function get(pageSize: number = 10, pageNow: number = 1) {
   return Request({
-    url:"api/info/get",
-    method:"get"
+    url: 'api/info/getAll',
+    method: 'get',
+    params: {
+      pageSize,
+      pageNow
+    }
   })
 }
+
 //留言列表
 export function getAll(pageNow:number,pageSize:number){
   return Request({

@@ -27,3 +27,44 @@ export function getUserInfo(){
     method: 'get',
   })
 }
+
+/**
+ * 获取用户收藏的图片
+ * @returns 用户收藏的图片列表
+ */
+export function getFavoriteImages(){
+  return Request({
+    url: 'api/userFile/getFavoriteImages',
+    method: 'get',
+  })
+}
+
+/**
+ * 添加图片到收藏
+ * @param imageUrl 图片URL
+ * @returns 添加结果
+ */
+export function addImageToFavorite(imageUrl: string){
+  return Request({
+    url: 'api/userFile/addFavoriteImage',
+    method: 'post',
+    data:{
+      url:imageUrl
+    }
+  })
+}
+
+/**
+ * 删除收藏的图片
+ * @param id 收藏图片的ID
+ * @returns 删除结果
+ */
+export function deleteFavoriteImage(id: number){
+  return Request({
+    url: 'api/userFile/del',
+    method: 'get',
+    params: {
+      id: id
+    }
+  })
+}

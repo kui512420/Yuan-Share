@@ -1,19 +1,19 @@
 import Request from '@/utils/Request'
 //添加文章
-export function getModelsList(){
-  return Request({
-    url: 'api/ai/getModelsList',
-    method: 'get'
-  })
+
+interface GenerateImageParams {
+  prompt: string;
+  size?: string;
+  style?: string;
 }
 
-export function chat(modelName:string,msg:string){
+export function generate(prompt: string, size?: string){
+  const params: GenerateImageParams = {
+    prompt
+  }
+  if (size) params.size = size
   return Request({
-    url: 'api/ai/chat',
-    method: 'post',
-    data:{
-      modelName:modelName,
-      msg:msg
-    }
+    url: 'api/ai/generate?prompt='+prompt+"&size="+size,
+    method: 'get'
   })
 }
