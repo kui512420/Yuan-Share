@@ -1,0 +1,337 @@
+/* 导入主题系统 */
+@import './themes.css';
+@import './theme-components.css';
+
+/* 全局重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 全局基础样式 */
+html, body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* 默认样式（后台管理页面） */
+body:not([data-theme]) {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* 科技风格样式（只在前台页面+科技主题下应用） */
+body.tech-theme[data-theme="tech"] {
+  background: var(--primary-bg);
+  color: var(--text-primary);
+}
+
+/* 动态背景 - 只在科技主题下显示 */
+body.tech-theme[data-theme="tech"]::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%),
+    linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+  z-index: -2;
+  animation: backgroundShift 40s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 网格背景 - 只在科技主题下显示 */
+body.tech-theme[data-theme="tech"]::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+  animation: gridMove 80s linear infinite;
+  will-change: transform;
+}
+
+/* 背景动画 */
+@keyframes backgroundShift {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* 霓虹发光效果 */
+.neon-glow {
+  box-shadow: 
+    0 0 10px var(--primary-color),
+    0 0 20px var(--primary-color);
+}
+
+.neon-text {
+  color: var(--primary-color);
+  text-shadow: 
+    0 0 10px var(--primary-color);
+}
+
+/* 玻璃拟态效果 */
+.glass-morphism {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+/* 科技感卡片 */
+.tech-card {
+  background: var(--surface-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.tech-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.tech-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.tech-card:hover::before {
+  left: 100%;
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* 输入框科技风格 */
+.tech-input {
+  background: rgba(26, 26, 46, 0.6);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  transition: all 0.3s ease;
+}
+
+.tech-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+  outline: none;
+}
+
+/* 按钮科技风格 */
+.tech-button {
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  border: none;
+  color: var(--primary-bg);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.tech-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+}
+
+.tech-button:hover::before {
+  left: 100%;
+}
+
+/* 滚动条样式 - 适配所有主题 */
+body.tech-theme ::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.tech-theme ::-webkit-scrollbar-track {
+  background: var(--secondary-bg);
+  border-radius: 4px;
+}
+
+body.tech-theme ::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  border-radius: 4px;
+}
+
+body.tech-theme ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+}
+
+/* 链接样式 - 适配所有主题 */
+body.tech-theme a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+body.tech-theme a:hover {
+  color: var(--accent-color);
+  text-shadow: 0 0 8px var(--accent-color);
+}
+
+/* 标签科技风格 */
+.tech-tag {
+  background: linear-gradient(45deg, rgba(0, 212, 255, 0.2), rgba(78, 205, 196, 0.2));
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin: 2px;
+}
+
+/* 加载动画 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--primary-color);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* 响应式设计 - 只在科技主题下应用 */
+@media (max-width: 650px) {
+  body.tech-theme[data-theme="tech"]::after {
+    background-size: 30px 30px;
+  }
+  
+  body.tech-theme .tech-card {
+    border-radius: 8px;
+    backdrop-filter: none; /* 移动端移除模糊效果 */
+    -webkit-backdrop-filter: none;
+  }
+  
+  body.tech-theme .glass-morphism {
+    backdrop-filter: none; /* 移动端移除模糊效果 */
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* 中等屏幕优化 - 只在科技主题下应用 */
+@media (min-width: 651px) and (max-width: 1024px) {
+  body.tech-theme[data-theme="tech"]::after {
+    background-size: 40px 40px;
+  }
+  
+  body.tech-theme .tech-card {
+    backdrop-filter: blur(3px); /* 减少模糊度 */
+    -webkit-backdrop-filter: blur(3px);
+  }
+}
+
+/* 大屏幕优化 - 只在科技主题下应用 */
+@media (min-width: 1400px) {
+  body.tech-theme[data-theme="tech"]::after {
+    background-size: 60px 60px;
+  }
+}
+
+/* 性能优先模式 - 只在科技主题下应用 */
+@media (prefers-reduced-motion: reduce) {
+  body.tech-theme[data-theme="tech"]::before,
+  body.tech-theme[data-theme="tech"]::after {
+    animation: none !important;
+  }
+  
+  body.tech-theme .tech-card::before,
+  body.tech-theme .neon-border,
+  body.tech-theme .glass-morphism {
+    animation: none !important;
+  }
+  
+  body.tech-theme .tech-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* 低端设备简化模式 - 只在科技主题下应用 */
+body.tech-theme.performance-mode .tech-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.tech-theme.performance-mode .glass-morphism {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.tech-theme.performance-mode[data-theme="tech"]::before,
+body.tech-theme.performance-mode[data-theme="tech"]::after {
+  animation: none !important;
+}
+
+/* 深色主题支持Element Plus - 适配所有主题 */
+body.tech-theme .el-menu--horizontal {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.tech-theme.dark .el-menu-item {
+  color: var(--text-secondary) !important;
+}
+
+body.tech-theme.dark .el-menu-item:hover,
+body.tech-theme.dark .el-menu-item.is-active {
+  color: var(--primary-color) !important;
+}
